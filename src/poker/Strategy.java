@@ -17,52 +17,51 @@ public class Strategy {
 	 * DS =Double(Stand if not allowed)
 	 */
 	
-
-	//column:5-18+
 	private static String [][] hard = {
 		 //   1   2    3     4   5    6    7   8     9   10
-			{"H", "H", "H", "H", "H", "H", "H","H", "H","H"},
-			{"H", "H", "H", "H", "H", "H", "H","H", "H","H"},
-			{"H", "H", "H", "H", "H", "H", "H","H", "H","H"},
-			{"H", "H", "H", "H", "H", "H", "H","H", "H","H"},
-			{"H", "H", "D", "D", "D", "D", "H","H", "H","H"},
-			{"H", "D", "D", "D", "D", "D", "D","D", "D","H"},
-			{"D", "D", "D", "D", "D", "D", "D","D", "D","D"},
-			{"H", "H", "H", "S", "S", "S", "H","H", "H","H"},
-			{"H", "S", "S", "S", "S", "S", "H","H", "H","H"},
-			{"H", "S", "S", "S", "S", "S", "H","H", "H","H"},
-			{"H", "S", "S", "S", "S", "S", "H","H", "H","H"},
-			{"H", "S", "S", "S", "S", "S", "H","H", "H","H"},
-			{"S", "S", "S", "S", "S", "S", "S","S", "S","S"},
-			{"S", "S", "S", "S", "S", "S", "S","S", "S","S"},
+			{"H", "H", "H", "H", "H", "H", "H","H", "H","H"}, //5
+			{"H", "H", "H", "H", "H", "H", "H","H", "H","H"}, //6
+			{"H", "H", "H", "H", "H", "H", "H","H", "H","H"}, //7
+			{"H", "H", "H", "H", "H", "H", "H","H", "H","H"}, //8
+			{"H", "H", "D", "D", "D", "D", "H","H", "H","H"}, //9
+			{"H", "D", "D", "D", "D", "D", "D","D", "D","H"}, //10
+			{"H", "D", "D", "D", "D", "D", "D","D", "D","D"}, //11
+			{"H", "S", "S", "S", "S", "S", "H","H", "H","H"}, //12
+			{"H", "S", "S", "S", "S", "S", "H","H", "H","H"}, //13
+			{"H", "S", "S", "S", "S", "S", "H","H", "H","H"}, //14
+			{"H", "S", "S", "S", "S", "S", "H","H", "H","H"}, //15
+			{"H", "S", "S", "S", "S", "S", "H","H", "H","H"}, //16
+			{"S", "S", "S", "S", "S", "S", "S","S", "S","S"}, //17
+			{"S", "S", "S", "S", "S", "S", "S","S", "S","S"}, //18
 	};
 
 	//column:(Ace+2)-(Ace+9)
 	private static String [][] soft = {
 		   //1    2    3     4    5    6    7    8    9    10
-			{"H", "H", "H", "H", "D", "D", "H", "H", "H", "H"},
-			{"H", "H", "H", "H", "D", "D", "H", "H", "H", "H"},
-			{"H", "H", "H", "D", "D", "D", "H", "H", "H", "H"},
-			{"H", "H", "H", "D", "D", "D", "H", "H", "H", "H"},
-			{"H", "H", "D", "D", "D", "D", "H", "H", "H", "H"},
-			{"H", "H", "D", "D", "D", "D", "D", "S", "S", "H"},
-			{"S", "S", "S", "S", "S", "D", "S", "S", "S", "S"},
-			{"S", "S", "S", "S", "S", "S", "S", "S", "S", "S"},
+			{"H", "H", "H", "H", "D", "D", "H", "H", "H", "H"}, //2
+			{"H", "H", "H", "H", "D", "D", "H", "H", "H", "H"}, //3
+			{"H", "H", "H", "D", "D", "D", "H", "H", "H", "H"}, //4
+			{"H", "H", "H", "D", "D", "D", "H", "H", "H", "H"}, //5
+			{"H", "H", "D", "D", "D", "D", "H", "H", "H", "H"}, //6
+			{"H", "S", "D", "D", "D", "D", "D", "S", "H", "H"}, //7
+			{"S", "S", "S", "S", "S", "S", "S", "S", "S", "S"}, //8
+			{"S", "S", "S", "S", "S", "S", "S", "S", "S", "S"}, //9
+			
 	};
 
 	//(2,2)-(A,A)
 	private static String [][] pairs = {
 		   //1    2    3     4    5    6    7    8    9    10
-		    {"P", "P", "P", "P", "P", "P", "P", "P", "P", "P"},
-			{"H", "P", "P", "P", "P", "P", "P", "H", "H", "H"},
-			{"H", "P", "P", "P", "P", "P", "P", "H", "H", "H"},
-			{"H", "H", "H", "H", "P", "P", "H", "H", "H", "H"},
-			{"H", "D", "D", "D", "D", "D", "D", "D", "D", "H"},
-			{"H", "P", "P", "P", "P", "P", "H", "H", "H", "H"},
-			{"H", "P", "P", "P", "P", "P", "P", "H", "H", "H"},
-			{"P", "P", "P", "P", "P", "P", "P", "P", "P", "P"},
-			{"S", "P", "P", "P", "P", "P", "S", "P", "P", "S"},
-			{"S", "S", "S", "S", "S", "S", "S", "S", "S", "S"},	
+		    {"P", "P", "P", "P", "P", "P", "P", "P", "P", "P"}, //1
+			{"H", "P", "P", "P", "P", "P", "P", "H", "H", "H"}, //2
+			{"H", "P", "P", "P", "P", "P", "P", "H", "H", "H"}, //3
+			{"H", "H", "H", "H", "P", "P", "H", "H", "H", "H"}, //4
+			{"H", "D", "D", "D", "D", "D", "D", "D", "D", "H"}, //5
+			{"H", "P", "P", "P", "P", "P", "H", "H", "H", "H"}, //6
+			{"H", "P", "P", "P", "P", "P", "P", "H", "H", "H"}, //7
+			{"S", "P", "P", "P", "P", "P", "P", "P", "S", "S"}, //8
+			{"S", "P", "P", "P", "P", "P", "S", "P", "P", "S"}, //9
+			{"S", "S", "S", "S", "S", "S", "S", "S", "S", "S"},	//10
 	};
 		
 	//dealer's strategy
@@ -146,43 +145,30 @@ public class Strategy {
 	}
 	
 	public String softHandStrategy(OneHand softhand, int dealerFirstCard) {
-		if(softhand.softHand())
-		{
-			int playerSumExcpAce = 0;
-			playerSumExcpAce = softhand.playerCardValue()-2-11;
-			int dealerFirstCardIndex = dealerFirstCard-1;
-			if(dealerFirstCardIndex > 9)
-			{
-				dealerFirstCardIndex = 9;
-			}
-			String strategy = soft[playerSumExcpAce][dealerFirstCardIndex];
-			
-			if (strategy.equals("D"))
-			{
-				return D;
-			}
-			else if (strategy.equals("H"))
-			{
-				return H;
-			}
-			else if (strategy.equals("D"))
-			{
-				return D;
-			}
-			else if (strategy.equals("S"))
-			{
-				return S;
-			}
-			else
-			{
-				Log.error(TAG, "lack strategy softhand");
-				return null;
-			}
+		
+		int playerSumExcpAce = 0;
+		playerSumExcpAce = softhand.playerCardValue()-2-11;
+		if(playerSumExcpAce > 7) {
+			playerSumExcpAce = 7;
 		}
-		else
-		{
-			Log.d(TAG, "not soft");
-		    return null;
+		int dealerFirstCardIndex = dealerFirstCard-1;
+		if(dealerFirstCardIndex > 9) {
+			dealerFirstCardIndex = 9;
+		}
+			
+		String strategy = soft[playerSumExcpAce][dealerFirstCardIndex];
+			
+		if (strategy.equals("D")) {
+			return D;
+		} else if (strategy.equals("H")) {
+			return H;
+		} else if (strategy.equals("D")) {
+			return D;
+		} else if (strategy.equals("S")) {
+			return S;
+		} else {
+			Log.error(TAG, "lack strategy softhand");
+			return null;
 		}
 	}
 	

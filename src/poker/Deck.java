@@ -1,6 +1,7 @@
 package poker;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -39,8 +40,24 @@ public class Deck {
 	public Deck(int num, int hot) {
 		init(num);
 		this.shuffle();
-		//hot
-		//for();
+
+		if(hot >= 0) {
+			for (Iterator<PokerCard> iter = deck_.listIterator(); iter.hasNext() && hot != 0; ) {
+				PokerCard a = iter.next();
+				if (a.getValue() >= 2 && a.getValue() <= 6) {
+					hot--;
+					iter.remove();
+				}
+			}
+		} else {
+			for (Iterator<PokerCard> iter = deck_.listIterator(); iter.hasNext() && hot != 0; ) {
+				PokerCard a = iter.next();
+				if (a.getValue() == 1 || a.getTTValue() == 10) {
+					hot++;
+					iter.remove();
+				}
+			}
+		}
 		//shuffle
 		this.shuffle();
 	}

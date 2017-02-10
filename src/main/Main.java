@@ -32,17 +32,26 @@ public class Main {
 	
 		Strategy x = new Strategy();				
 		
-		Player lei = new Player();
-		Player dealer = new Player();
-		
 	
-		while(true) {			
-			Deck deck = new Deck(4);
+	
+		int round = 40 * 5;
+		int r = 0;
+		double playwin = 0;
+		double dealerwin = 0;
+
+		//bad: 49.4%
+		//netrue: 49.88%
+		//good: 50.41%
+		while(r++ < round) {
+			Deck deck = new Deck(4, 0);
 			deck.shuffle();
+			Player lei = new Player();
+			Player dealer = new Player();
+			
 			OneHand hand = new OneHand(1);
 			lei.addOneHand(hand);
-			OneHand another = new OneHand();
-			dealer.addOneHand(another);
+			OneHand dealerHand = new OneHand();
+			dealer.addOneHand(dealerHand);
 			
 			dealer.getOneHand(0).hit(deck.drawCard());
 			dealer.getOneHand(0).hit(deck.drawCard());
@@ -50,33 +59,85 @@ public class Main {
 			lei.getOneHand(0).hit(deck.drawCard());
 			lei.getOneHand(0).hit(deck.drawCard());
 			
+			PokerCard firstCard = dealerHand.firstCard();
+			if(hand.isBlackJack()) {
+				if(!dealerHand.isBlackJack()) {
+					playwin += hand.getBet() * 1.5;					
+				}
+				continue;
+			} else if(dealerHand.isBlackJack()) {
+				dealerwin += hand.getBet();
+				continue;
+			}
 			
-			for(int m = 0; m < lei.numberOfHands(); ++m) {
-				OneHand curhand = lei.getOneHand(m);
-				String stra = x.PlayerStrategy(curhand, dealer.getOneHand(0).firstCard().getValue());;				//hit
+			//Log.d(TAG, gson.toJson(lei.getOneHand(0)));
+			//Log.d(TAG, gson.toJson(dealer.getOneHand(0).firstCard()));
+
+			//player moves
+			for(int j = 0; j < lei.numberOfHands(); ++j) {
+				OneHand curhand = lei.getOneHand(j);
+				
+				String stra = x.PlayerStrategy(curhand, firstCard.getTTValue());;	
 				if(stra.equals(Strategy.H)) {
-					lei.getOneHand(0).hit(deck.drawCard());
+					lei.getOneHand(j).hit(deck.drawCard());
+					j--;
 				} else if(stra.equals(Strategy.S)) {
 					continue;
 				} else if(stra.equals(Strategy.D)) {
-					lei.getOneHand(0).hit(deck.drawCard());
+					lei.getOneHand(j).doubleDown(deck.drawCard());
 					continue;		
 				} else if(stra.equals(Strategy.P)) {
 					OneHand oneMore = curhand.split();
 					curhand.hit(deck.drawCard());
 					oneMore.hit(deck.drawCard());
 					lei.addOneHand(oneMore);
-					m --;
+					j--;
 					continue;
+				} else {
+					
 				}
 			}
 			
-			Log.d(TAG, gson.toJson(lei.getOneHand(0)));
-			Log.d(TAG, gson.toJson(dealer.getOneHand(0).firstCard()));
+			//dealer moves
+			while(true) {
+				String stra = x.DealerStrategy(dealer.getOneHand(0));
+				if(stra.equals(Strategy.H)) {
+					dealer.getOneHand(0).hit(deck.drawCard());
+				} else if(stra.equals(Strategy.S)) {
+					break;
+				} else {
+					
+				}
+			}
 			
-			break;
+			//sum up
+
+			int firstcard = dealer.getOneHand(0).firstCard().getTTValue();
+			int dvalue = dealer.getOneHand(0).playerCardValue();
+			if(dvalue < 17) {
+				Log.error(TAG, dvalue);
+			}
+			for(int j = 0; j < lei.numberOfHands(); ++j) {
+				OneHand curHand = lei.getOneHand(j);
+				int myvalue = curHand.playerCardValue();
+				//Log.d(gson.toJson(curHand), dvalue, firstcard);
+				double bet = curHand.getBet();
+				if(myvalue > 21) {
+					//player bust
+					dealerwin += bet;
+				} else if(dvalue > 21) {
+					playwin += bet;
+				} else if(myvalue > dvalue){
+					playwin += bet;
+				} else if(myvalue < dvalue) {
+					dealerwin += bet;
+				} else {
+					
+				}
+			}
 		}
-		
+		Log.d(TAG, playwin, dealerwin);
+		Log.d(TAG, (double)playwin/(playwin + dealerwin));		
 	}	
 	
 
