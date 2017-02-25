@@ -10,6 +10,9 @@ public class OneHand {
 	private double bet_ = 0.0;
 	private static final String TAG = "OneHand";
 	private static int kBustThreshold = 999;
+	
+	private boolean splitted_ = false;
+	private int split_index_ = -1;
 
 	public OneHand() {
 		//dealer's hand no bet
@@ -40,13 +43,24 @@ public class OneHand {
 		this.hand_.add(card);
 	}
 	
+	public void setSplitIndex(int index) {
+		this.splitted_ = true;
+		this.split_index_ = index;
+	}
+	
 	//to actual split
 	//agreement: do not change Lei's code
 	public OneHand split() 
 	{
+		assert this.hand_.size() == 2;
 		OneHand anotherhand = new OneHand(this.bet_);
 		PokerCard card = this.hand_.remove(1);
 		anotherhand.hit(card);
+		if(false == this.splitted_) {
+			this.split_index_ = 0;
+			this.splitted_ = true;
+		}
+		anotherhand.setSplitIndex(this.split_index_ + 1);
 		return anotherhand;
 	}
 

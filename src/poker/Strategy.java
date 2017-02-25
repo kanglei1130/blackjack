@@ -5,10 +5,10 @@ import ultility.Log;
 public class Strategy {
 	
 	//enum 
-	public static final String H = "HIT"; 
-	public static final String D = "DOUBLEDOWN";
-	public static final String P = "SPLIT";
- 	public static final String S = "STAND";
+	public static final String HIT = "H"; 
+	public static final String DOUBLE = "D";
+	public static final String SPLIT = "P";
+ 	public static final String STAND = "S";
 
  	private static String TAG = "Strategy";
 	
@@ -29,8 +29,8 @@ public class Strategy {
 			{"H", "S", "S", "S", "S", "S", "H","H", "H","H"}, //12
 			{"H", "S", "S", "S", "S", "S", "H","H", "H","H"}, //13
 			{"H", "S", "S", "S", "S", "S", "H","H", "H","H"}, //14
-			{"H", "S", "S", "S", "S", "S", "H","H", "H","H"}, //15
-			{"H", "S", "S", "S", "S", "S", "H","H", "H","H"}, //16
+			{"H", "S", "S", "S", "S", "S", "H","H", "S","H"}, //15
+			{"H", "S", "S", "S", "S", "S", "H","S", "S","H"}, //16
 			{"S", "S", "S", "S", "S", "S", "S","S", "S","S"}, //17
 			{"S", "S", "S", "S", "S", "S", "S","S", "S","S"}, //18
 	};
@@ -71,23 +71,23 @@ public class Strategy {
 		{
 			if(hand.playerCardValue() < 18)
 			{
-				return H;
+				return HIT;
 		    }
 			
 			else   
 			{
-				return S;
+				return STAND;
 			}	
 		}
 		else
 		{
 			if(hand.playerCardValue()<17)
 			{
-				return H;
+				return HIT;
 		    }
 			else   
 			{
-				return S;
+				return STAND;
 			}	
 		}
 	}
@@ -109,37 +109,20 @@ public class Strategy {
 		}
 	}
 	
-	public String pairStrategy(OneHand pair, int dealerFirstCard) {
-		if(pair.isPairs())
-		{
-			int playerCard = pair.firstCard().getTTValue() - 1;
-			int dealerFirstCardIndex = dealerFirstCard - 1;
-			String strategy = pairs[playerCard][dealerFirstCardIndex];
-			if (strategy.equals("P"))
-			{
-			    return P;
-			}
-			else if (strategy.equals("H"))
-			{
-				return H;
-			}
-			else if (strategy.equals("D"))
-			{
-				return D;
-			}
-			else if (strategy.equals("S"))
-			{
-				return S;
-			}
-			else
-			{
-				Log.error(TAG, "lack strategy split");
-				return null;
-			}
-		}
-		else
-		{
-			Log.error(TAG, "not a pair");
+	public String pairStrategy(OneHand pair, int dealerFirstCard) {	
+		int playerCard = pair.firstCard().getTTValue() - 1;
+		int dealerFirstCardIndex = dealerFirstCard - 1;
+		String strategy = pairs[playerCard][dealerFirstCardIndex];
+		if (strategy.equals("P")) {
+			return SPLIT;
+		} else if (strategy.equals("H")) {
+			return HIT;
+		} else if (strategy.equals("D")) {
+			return DOUBLE;
+		} else if (strategy.equals("S")) {
+			return STAND;
+		} else {
+			Log.error(TAG, "lack strategy split");
 			return null;
 		}
 	}
@@ -159,13 +142,13 @@ public class Strategy {
 		String strategy = soft[playerSumExcpAce][dealerFirstCardIndex];
 			
 		if (strategy.equals("D")) {
-			return D;
+			return DOUBLE;
 		} else if (strategy.equals("H")) {
-			return H;
+			return HIT;
 		} else if (strategy.equals("D")) {
-			return D;
+			return DOUBLE;
 		} else if (strategy.equals("S")) {
-			return S;
+			return STAND;
 		} else {
 			Log.error(TAG, "lack strategy softhand");
 			return null;
@@ -173,41 +156,25 @@ public class Strategy {
 	}
 	
 	public String hardHandStrategy(OneHand hand, int dealerFirstCard) {
-		if(!hand.softHand())
-		{
-			int playerSumCard = 0;
-			if (hand.playerCardValue()<18)
-			{
-				playerSumCard = hand.playerCardValue()-5;
-			}
-			else
-			{
-				playerSumCard = 13;
-			}
-			int dealerFirstCardIndex = dealerFirstCard-1;
-			String strategy = hard[playerSumCard][dealerFirstCardIndex];
-			
-			if (strategy.equals("H"))
-			{
-				return H;
-			}
-			else if (strategy.equals("D"))
-			{
-				return D;
-			}
-			else if (strategy.equals("S"))
-			{
-				return S;
-			}
-			else
-			{
-				Log.error(TAG, "lack strategy hard");
-				return null;
-			}
+		int playerSumCard = 0;
+		if (hand.playerCardValue()<18) {
+			playerSumCard = hand.playerCardValue()-5;
+		} else {
+			playerSumCard = 13;
 		}
-		else
-		{
-		return null;
+			
+		int dealerFirstCardIndex = dealerFirstCard-1;
+		String strategy = hard[playerSumCard][dealerFirstCardIndex];
+			
+		if (strategy.equals("H")) {
+			return HIT;
+		} else if (strategy.equals("D")) {
+			return DOUBLE;
+		} else if (strategy.equals("S")) {
+			return STAND;
+		} else {
+			Log.error(TAG, "lack strategy hard");
+			return null;
 		}
 	}
 }
