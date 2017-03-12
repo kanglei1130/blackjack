@@ -35,41 +35,30 @@ public class Main {
 	public static void iterateOneHand() {
 		Strategy x = new Strategy();				
 		Gson gson = new Gson();
-		PokerCard dealerCard = new PokerCard(8, PokerCard.CLUB);
+		PokerCard dealerCard = new PokerCard(10, PokerCard.CLUB);
 		PokerCard playFirstCard = new PokerCard(10, PokerCard.CLUB);
 		PokerCard playSecondCard = new PokerCard(6, PokerCard.CLUB);
 		
+		//hot/cold
+		// - 0.534  for Stand
+		// -0.526 for hit
 		
-		int round = 1000*1000;
+		//hot
+		//stand -0.56
+		//hit -0.57937
+		
+		
+		//5 hot
+		//stand  -0.545 
+		//hit  -0.55
+		int round = 100*1000;
 		int r = 0;
 		double playwin = 0;
 		double dealerwin = 0;
 		int dealerBust = 0;
-
-
-		//16 against a 10
-		//hit: 21.23%
-		//stand: 21.4%
-		
-		//15 against a 10
-		//hit: 23.05%
-		//stand: 23.06%
-		
-		//15 against a 9
-		//hit: 24.95%
-		//stand: 23%
-		
-		//16 against a 9
-		//hit: 23.02%
-		//stand: 22.8961%
-		
-		
-		//16 against a 8
-		//hit: 25.64%
-		//stand:24.55%
 		
 		while(r++ < round) {
-			Deck deck = new Deck(4, 0);
+			Deck deck = new Deck(4, 5);
 			deck.shuffle();
 			Player lei = new Player();
 			Player dealer = new Player();
@@ -93,6 +82,7 @@ public class Main {
 				continue;
 			} else if(dealerHand.isBlackJack()) {
 				//dealerwin += hand.getBet();
+				r--;
 				continue;
 			}
 			
@@ -103,7 +93,8 @@ public class Main {
 			for(int j = 0; j < lei.numberOfHands(); ++j) {
 				OneHand curhand = lei.getOneHand(j);
 				
-				String stra = x.PlayerStrategy(curhand, firstCard.getTTValue());;	
+				
+				String stra = x.PlayerStrategy(curhand, firstCard.getTTValue(), true, true);	
 				if(stra.equals(Strategy.HIT)) {
 					lei.getOneHand(j).hit(deck.drawCard());
 					j--;
@@ -168,9 +159,7 @@ public class Main {
 			}
 			//Log.d("-====================================================-");
 		}
-		Log.d(TAG, playwin, dealerwin);
-		Log.d(TAG, (double)playwin/(playwin + dealerwin));		
-		Log.d(TAG, playwin, dealerBust);
+		Log.d(TAG, (double)(playwin - dealerwin)/(round));		
 	}
 	
 
@@ -224,7 +213,7 @@ public class Main {
 			for(int j = 0; j < lei.numberOfHands(); ++j) {
 				OneHand curhand = lei.getOneHand(j);
 				
-				String stra = x.PlayerStrategy(curhand, firstCard.getTTValue());;	
+				String stra = x.PlayerStrategy(curhand, firstCard.getTTValue(), true, true);	
 				if(stra.equals(Strategy.HIT)) {
 					lei.getOneHand(j).hit(deck.drawCard());
 					j--;

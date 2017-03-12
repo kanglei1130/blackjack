@@ -93,20 +93,25 @@ public class Strategy {
 	}
 	
 	//player's strategy
-	public String PlayerStrategy(OneHand hand, int dealerFirstCard)
+	public String PlayerStrategy(OneHand hand, int dealerFirstCard, boolean allowDouble, boolean allowSplit)
 	{
-		if(hand.isPairs())
+		String stra = STAND;
+		if(hand.isPairs() && allowSplit == true)
 		{
-			return pairStrategy(hand, dealerFirstCard);
+			stra = pairStrategy(hand, dealerFirstCard);
 		}
 		else if(hand.softHand())
 		{
-			return softHandStrategy(hand, dealerFirstCard);
+			stra = softHandStrategy(hand, dealerFirstCard);
 		}
 		else
 		{
-			return hardHandStrategy(hand, dealerFirstCard);
+			stra = hardHandStrategy(hand, dealerFirstCard);
 		}
+		if(allowDouble == false && stra.equals(DOUBLE)) {
+			stra = HIT;
+		}
+		return stra;
 	}
 	
 	public String pairStrategy(OneHand pair, int dealerFirstCard) {	
