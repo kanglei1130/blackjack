@@ -1,6 +1,7 @@
 package main;
 
-import com.google.gson.Gson;
+import java.util.ArrayList;
+import java.util.List;
 
 import poker.Deck;
 import poker.OneHand;
@@ -8,11 +9,16 @@ import poker.Player;
 import poker.PokerCard;
 import poker.Strategy;
 import ultility.Log;
+import ultility.ReadWriteTrace;
+
+import com.google.gson.Gson;
 
 
 public class Main {
 
 	private static final String TAG = "Main";
+	private static final String output = "./strategy/hard/";
+	
 	
 	/**
 	 * @param args
@@ -24,6 +30,17 @@ public class Main {
 		//Deck deck = new Deck(4);
 		//deck.shuffle();
 		
+		
+		//iterateOneHand();
+		
+		for(int hot = -12; hot <= 12; hot += 4) {
+			List<String> cur = hotnessTest(hot);
+			ReadWriteTrace.writeFile(cur, output.concat(String.valueOf(hot)));
+		}
+	}	
+	
+	public static List<String> hotnessTest(int hot) {
+		List<String> res = new ArrayList<String>();
 		int player[][] = {
 				{3, 4},
 				{3, 5},
@@ -49,28 +66,26 @@ public class Main {
 				String beststra = null;
 				for(int j = 0; j < stras.length; ++j) {
 					String stra = stras[j];
-					double bets = winnings(dealerCard, playFirstCard, playSecondCard, stra);
+					double bets = winnings(dealerCard, playFirstCard, playSecondCard, stra, hot);
 					if(bestbets < bets) {
 						bestbets = bets;
 						beststra = new String(stra);
 					}
 				}
-				Log.d(String.valueOf(upcard), String.valueOf(i + 7), beststra, String.valueOf(bestbets));
+				res.add(String.valueOf(upcard) + "," + String.valueOf(i + 7) + "," + beststra + "," + String.valueOf(bestbets));
 			}
 		}
-		
-		
-		//iterateOneHand();
-	}	
+		return res;
+	}
 	
-	public static double winnings(PokerCard dealerCard, PokerCard playFirstCard, PokerCard playSecondCard, String stra) {
-		int round = 10000;
+	public static double winnings(PokerCard dealerCard, PokerCard playFirstCard, PokerCard playSecondCard, String stra, int hot) {
+		int round = 100*1000;
 		int r = 0;
 		double sumbets = 0;
 		Strategy dealerStra = new Strategy();
 		
 		while(r++ < round) {
-			Deck deck = new Deck(4, 0);
+			Deck deck = new Deck(4, hot);
 			deck.shuffle();
 			Player lei = new Player();
 			Player dealer = new Player();
