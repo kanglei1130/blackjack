@@ -43,6 +43,7 @@ public class Main {
 		List<String> res = new ArrayList<String>();
 		
 		//soft
+		/*
 		int index = 2;
 		int player[][] = {
 				{1, 2},
@@ -56,7 +57,7 @@ public class Main {
 		};
 		
 		//hard
-		/*
+		*/
 		int index = 7;
 		int player[][] = {
 				{3, 4},
@@ -70,7 +71,7 @@ public class Main {
 				{5, 10},
 				{6, 10}
 		};
-		*/
+		
 		String stras[] = {Strategy.DOUBLE, Strategy.HIT, Strategy.STAND};
 		
 		PokerCard dealerCard = null, playFirstCard = null, playSecondCard = null;
@@ -89,7 +90,9 @@ public class Main {
 						beststra = new String(stra);
 					}
 				}
-				res.add(String.valueOf(upcard) + "," + String.valueOf(i + index) + "," + beststra + "," + String.valueOf(bestbets));
+				String opt = String.valueOf(upcard) + "," + String.valueOf(i + index) + "," + beststra + "," + String.valueOf(bestbets);
+				Log.d(TAG, opt);
+				res.add(opt);
 			}
 		}
 		return res;
