@@ -47,6 +47,10 @@ public class Deck {
 				if (a.getValue() >= 2 && a.getValue() <= 6) {
 					hot--;
 					iter.remove();
+				} else if(a.getValue() <= 9 && a.getValue() >=7) {
+					iter.remove();
+				} else {
+					continue;
 				}
 			}
 		} else {
@@ -55,6 +59,10 @@ public class Deck {
 				if (a.getValue() == 1 || a.getTTValue() == 10) {
 					hot++;
 					iter.remove();
+				} else if(a.getValue() <= 9 && a.getValue() >=7) {
+					iter.remove();
+				} else {
+					continue;
 				}
 			}
 		}

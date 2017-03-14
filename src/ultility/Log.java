@@ -15,6 +15,9 @@ public class Log {
 	public static void d(Object src, Object obj, Object obj1) {
 		System.out.println(src + kSeperator + obj  + kSeperator + obj1);
 	}
+	public static void d(Object src, Object obj, Object obj1, Object obj2) {
+		System.out.println(src + kSeperator + obj  + kSeperator + obj1  + kSeperator + obj2);
+	}
 	
 	
 	public static void error(Object src, Object obj) {

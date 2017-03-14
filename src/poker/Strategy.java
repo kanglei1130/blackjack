@@ -28,9 +28,9 @@ public class Strategy {
 			{"H", "D", "D", "D", "D", "D", "D","D", "D","D"}, //11
 			{"H", "S", "S", "S", "S", "S", "H","H", "H","H"}, //12
 			{"H", "S", "S", "S", "S", "S", "H","H", "H","H"}, //13
-			{"H", "S", "S", "S", "S", "S", "H","H", "H","H"}, //14
+			{"H", "S", "S", "S", "S", "S", "H","H", "H","S"}, //14
 			{"H", "S", "S", "S", "S", "S", "H","H", "S","H"}, //15
-			{"H", "S", "S", "S", "S", "S", "H","S", "S","H"}, //16
+			{"H", "S", "S", "S", "S", "S", "S","S", "H","H"}, //16
 			{"S", "S", "S", "S", "S", "S", "S","S", "S","S"}, //17
 			{"S", "S", "S", "S", "S", "S", "S","S", "S","S"}, //18
 	};
@@ -108,6 +108,7 @@ public class Strategy {
 		{
 			stra = hardHandStrategy(hand, dealerFirstCard);
 		}
+				
 		if(allowDouble == false && stra.equals(DOUBLE)) {
 			stra = HIT;
 		}

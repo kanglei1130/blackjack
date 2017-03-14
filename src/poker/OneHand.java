@@ -29,12 +29,9 @@ public class OneHand {
 		return this.hand_.get(0);
 	}
 	
-	public PokerCard secondCard() {
-		return this.hand_.get(1);
-	}
-		
-	public List<PokerCard> getCards() {
-		return this.hand_;
+	
+	public int numberOfCards() {
+		return this.hand_.size();
 	}
 	
 	public void hit(PokerCard card) {

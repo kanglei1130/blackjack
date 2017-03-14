@@ -1,8 +1,7 @@
 package main;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import com.google.gson.Gson;
+
 import poker.Deck;
 import poker.OneHand;
 import poker.Player;
@@ -10,13 +9,9 @@ import poker.PokerCard;
 import poker.Strategy;
 import ultility.Log;
 
-import com.google.gson.Gson;
-
 
 public class Main {
-	private static int AceCounter;//how many aces are in the user's hand
-	private static int handvalue;//the value of the user's hand
-	private static int bet;//how much the user wants to bet
+
 	private static final String TAG = "Main";
 	
 	/**
@@ -29,32 +24,154 @@ public class Main {
 		//Deck deck = new Deck(4);
 		//deck.shuffle();
 		
-		iterateOneHand();
-
+		int player[][] = {
+				{3, 4},
+				{3, 5},
+				{2, 7},
+				{3, 7},
+				{2, 9},
+				{2, 10},
+				{3, 10},
+				{4, 10},
+				{5, 10},
+				{6, 10}
+		};
+		
+		String stras[] = {Strategy.DOUBLE, Strategy.HIT, Strategy.STAND};
+		
+		PokerCard dealerCard = null, playFirstCard = null, playSecondCard = null;
+		for(int upcard = 1; upcard <= 10; ++upcard) {
+			dealerCard = new PokerCard(upcard, PokerCard.SPADE);
+			for(int i = 0; i < player.length; ++i) {
+				playFirstCard = new PokerCard(player[i][0], PokerCard.CLUB);
+				playSecondCard = new PokerCard(player[i][1], PokerCard.CLUB);	
+				double bestbets = Double.NEGATIVE_INFINITY;
+				String beststra = null;
+				for(int j = 0; j < stras.length; ++j) {
+					String stra = stras[j];
+					double bets = winnings(dealerCard, playFirstCard, playSecondCard, stra);
+					if(bestbets < bets) {
+						bestbets = bets;
+						beststra = new String(stra);
+					}
+				}
+				Log.d(String.valueOf(upcard), String.valueOf(i + 7), beststra, String.valueOf(bestbets));
+			}
+		}
+		
+		
+		//iterateOneHand();
 	}	
+	
+	public static double winnings(PokerCard dealerCard, PokerCard playFirstCard, PokerCard playSecondCard, String stra) {
+		int round = 10000;
+		int r = 0;
+		double sumbets = 0;
+		Strategy dealerStra = new Strategy();
+		
+		while(r++ < round) {
+			Deck deck = new Deck(4, 0);
+			deck.shuffle();
+			Player lei = new Player();
+			Player dealer = new Player();
+			
+			OneHand hand = new OneHand(1);
+			lei.addOneHand(hand);
+			OneHand dealerHand = new OneHand();
+			dealer.addOneHand(dealerHand);
+			
+			dealer.getOneHand(0).hit(dealerCard);
+			dealer.getOneHand(0).hit(deck.drawCard());
+			
+			lei.getOneHand(0).hit(playFirstCard);
+			lei.getOneHand(0).hit(playSecondCard);
+			
+			if(hand.isBlackJack()) {
+				if(!dealerHand.isBlackJack()) {
+					sumbets += hand.getBet() * 1.5;					
+				}
+				continue;
+			} else if(dealerHand.isBlackJack()) {
+				sumbets -= hand.getBet();
+				continue;
+			}
+			
+			//player moves
+			for(int j = 0; j < lei.numberOfHands(); ++j) {
+				OneHand curhand = lei.getOneHand(j);
+				
+				if(stra.equals(Strategy.HIT)) {
+					if(curhand.playerCardValue() < 17) {
+						lei.getOneHand(j).hit(deck.drawCard());
+						j--;
+					} else {
+						continue;
+					}
+				} else if(stra.equals(Strategy.STAND)) {
+					continue;
+				} else if(stra.equals(Strategy.DOUBLE)) {
+					lei.getOneHand(j).doubleDown(deck.drawCard());
+					continue;		
+				} else if(stra.equals(Strategy.SPLIT)) {
+					OneHand oneMore = curhand.split();
+					curhand.hit(deck.drawCard());
+					oneMore.hit(deck.drawCard());
+					lei.addOneHand(oneMore);
+					j--;
+					continue;
+				} else {
+					
+				}
+			}
+			
+			//dealer moves
+			while(true) {
+				String move = dealerStra.DealerStrategy(dealer.getOneHand(0));
+				if(move.equals(Strategy.HIT)) {
+					dealer.getOneHand(0).hit(deck.drawCard());
+				} else if(move.equals(Strategy.STAND)) {
+					break;
+				} else {
+					
+				}
+			}
+			
+			//sum up
+
+			int dvalue = dealer.getOneHand(0).playerCardValue();
+			
+			for(int j = 0; j < lei.numberOfHands(); ++j) {
+				OneHand curHand = lei.getOneHand(j);
+				int myvalue = curHand.playerCardValue();
+				//Log.d("player", gson.toJson(curHand));
+				double bet = curHand.getBet();
+				if(myvalue > 21) {
+					//player bust
+					sumbets -= bet;
+				} else if(dvalue > 21) {
+					sumbets += bet;
+				} else if(myvalue > dvalue){
+					sumbets += bet;
+				} else if(myvalue < dvalue) {
+					sumbets -= bet;
+				} else {
+					//Log.error(TAG, myvalue, dvalue);
+				}
+			}
+		}
+		return sumbets;
+	}
+	
 	public static void iterateOneHand() {
 		Strategy x = new Strategy();				
 		Gson gson = new Gson();
 		PokerCard dealerCard = new PokerCard(10, PokerCard.CLUB);
-		PokerCard playFirstCard = new PokerCard(10, PokerCard.CLUB);
-		PokerCard playSecondCard = new PokerCard(6, PokerCard.CLUB);
+		PokerCard playFirstCard = new PokerCard(4, PokerCard.CLUB);
+		PokerCard playSecondCard = new PokerCard(10, PokerCard.CLUB);
 		
-		//hot/cold
-		// - 0.534  for Stand
-		// -0.526 for hit
-		
-		//hot
-		//stand -0.56
-		//hit -0.57937
-		
-		
-		//5 hot
-		//stand  -0.545 
-		//hit  -0.55
 		int round = 100*1000;
 		int r = 0;
-		double playwin = 0;
-		double dealerwin = 0;
+		double sumbets = 0;
 		int dealerBust = 0;
 		
 		while(r++ < round) {
@@ -77,12 +194,11 @@ public class Main {
 			PokerCard firstCard = dealerHand.firstCard();
 			if(hand.isBlackJack()) {
 				if(!dealerHand.isBlackJack()) {
-					playwin += hand.getBet() * 1.5;					
+					sumbets += hand.getBet() * 1.5;					
 				}
 				continue;
 			} else if(dealerHand.isBlackJack()) {
-				//dealerwin += hand.getBet();
-				r--;
+				sumbets -= hand.getBet();
 				continue;
 			}
 			
@@ -146,20 +262,19 @@ public class Main {
 				double bet = curHand.getBet();
 				if(myvalue > 21) {
 					//player bust
-					dealerwin += bet;
+					sumbets -= bet;
 				} else if(dvalue > 21) {
-					playwin += bet;
+					sumbets += bet;
 				} else if(myvalue > dvalue){
-					playwin += bet;
+					sumbets += bet;
 				} else if(myvalue < dvalue) {
-					dealerwin += bet;
+					sumbets -= bet;
 				} else {
 					//Log.error(TAG, myvalue, dvalue);
 				}
 			}
-			//Log.d("-====================================================-");
 		}
-		Log.d(TAG, (double)(playwin - dealerwin)/(round));		
+		Log.d(TAG, sumbets);		
 	}
 	
 
