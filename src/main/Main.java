@@ -8,8 +8,8 @@ import poker.OneHand;
 import poker.Player;
 import poker.PokerCard;
 import poker.Strategy;
-import ultility.Log;
-import ultility.ReadWriteTrace;
+import utility.Log;
+import utility.ReadWriteTrace;
 
 import com.google.gson.Gson;
 

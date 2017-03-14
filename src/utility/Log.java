@@ -1,4 +1,4 @@
-package ultility;
+package utility;
 
 public class Log {
 	

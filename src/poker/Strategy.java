@@ -1,6 +1,6 @@
 package poker;
 
-import ultility.Log;
+import utility.Log;
 
 public class Strategy {
 	
