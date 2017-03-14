@@ -17,7 +17,7 @@ import com.google.gson.Gson;
 public class Main {
 
 	private static final String TAG = "Main";
-	private static final String output = "./strategy/hard/";
+	private static final String output = "./strategy/soft/";
 	
 	
 	/**
@@ -41,6 +41,23 @@ public class Main {
 	
 	public static List<String> hotnessTest(int hot) {
 		List<String> res = new ArrayList<String>();
+		
+		//soft
+		int index = 2;
+		int player[][] = {
+				{1, 2},
+				{1, 3},
+				{1, 4},
+				{1, 5},
+				{1, 6},
+				{1, 7},
+				{1, 8},
+				{1, 9}
+		};
+		
+		//hard
+		/*
+		int index = 7;
 		int player[][] = {
 				{3, 4},
 				{3, 5},
@@ -53,7 +70,7 @@ public class Main {
 				{5, 10},
 				{6, 10}
 		};
-		
+		*/
 		String stras[] = {Strategy.DOUBLE, Strategy.HIT, Strategy.STAND};
 		
 		PokerCard dealerCard = null, playFirstCard = null, playSecondCard = null;
@@ -72,7 +89,7 @@ public class Main {
 						beststra = new String(stra);
 					}
 				}
-				res.add(String.valueOf(upcard) + "," + String.valueOf(i + 7) + "," + beststra + "," + String.valueOf(bestbets));
+				res.add(String.valueOf(upcard) + "," + String.valueOf(i + index) + "," + beststra + "," + String.valueOf(bestbets));
 			}
 		}
 		return res;
