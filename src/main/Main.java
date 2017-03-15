@@ -17,7 +17,7 @@ import com.google.gson.Gson;
 public class Main {
 
 	private static final String TAG = "Main";
-	private static final String output = "./strategy/soft/";
+	private static final String output = "./strategy/tmp/";
 	
 	
 	/**
@@ -32,8 +32,8 @@ public class Main {
 		
 		
 		//iterateOneHand();
-		
-		for(int hot = -12; hot <= 12; hot += 4) {
+
+		for(int hot = -8; hot <= 12; hot += 4) {
 			List<String> cur = hotnessTest(hot);
 			ReadWriteTrace.writeFile(cur, output.concat(String.valueOf(hot)));
 		}
@@ -43,7 +43,7 @@ public class Main {
 		List<String> res = new ArrayList<String>();
 		
 		//soft
-		/*
+		
 		int index = 2;
 		int player[][] = {
 				{1, 2},
@@ -51,13 +51,11 @@ public class Main {
 				{1, 4},
 				{1, 5},
 				{1, 6},
-				{1, 7},
-				{1, 8},
-				{1, 9}
+				{1, 7}
 		};
 		
 		//hard
-		*/
+		/*
 		int index = 7;
 		int player[][] = {
 				{3, 4},
@@ -71,7 +69,7 @@ public class Main {
 				{5, 10},
 				{6, 10}
 		};
-		
+		*/
 		String stras[] = {Strategy.DOUBLE, Strategy.HIT, Strategy.STAND};
 		
 		PokerCard dealerCard = null, playFirstCard = null, playSecondCard = null;
@@ -136,7 +134,7 @@ public class Main {
 				OneHand curhand = lei.getOneHand(j);
 				
 				if(stra.equals(Strategy.HIT)) {
-					if(curhand.playerCardValue() < 17) {
+					if((curhand.softHand() == true && curhand.playerCardValue() < 18) || (curhand.softHand() == false &&curhand.playerCardValue() < 17)) {
 						lei.getOneHand(j).hit(deck.drawCard());
 						j--;
 					} else {
