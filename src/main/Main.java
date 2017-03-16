@@ -50,8 +50,7 @@ public class Main {
 				{1, 3},
 				{1, 4},
 				{1, 5},
-				{1, 6},
-				{1, 7}
+				{1, 6}
 		};
 		
 		//hard
@@ -73,7 +72,7 @@ public class Main {
 		String stras[] = {Strategy.DOUBLE, Strategy.HIT, Strategy.STAND};
 		
 		PokerCard dealerCard = null, playFirstCard = null, playSecondCard = null;
-		for(int upcard = 1; upcard <= 10; ++upcard) {
+		for(int upcard = 2; upcard <= 6; ++upcard) {
 			dealerCard = new PokerCard(upcard, PokerCard.SPADE);
 			for(int i = 0; i < player.length; ++i) {
 				playFirstCard = new PokerCard(player[i][0], PokerCard.CLUB);
@@ -97,7 +96,7 @@ public class Main {
 	}
 	
 	public static double winnings(PokerCard dealerCard, PokerCard playFirstCard, PokerCard playSecondCard, String stra, int hot) {
-		int round = 100*1000;
+		int round = 10000;
 		int r = 0;
 		double sumbets = 0;
 		Strategy dealerStra = new Strategy();
@@ -134,11 +133,9 @@ public class Main {
 				OneHand curhand = lei.getOneHand(j);
 				
 				if(stra.equals(Strategy.HIT)) {
-					if((curhand.softHand() == true && curhand.playerCardValue() < 18) || (curhand.softHand() == false &&curhand.playerCardValue() < 17)) {
+					if(curhand.softHand() == true) {
 						lei.getOneHand(j).hit(deck.drawCard());
-						j--;
-					} else {
-						continue;
+						//j--;
 					}
 				} else if(stra.equals(Strategy.STAND)) {
 					continue;
