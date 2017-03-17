@@ -33,7 +33,7 @@ public class Main {
 		
 		//iterateOneHand();
 
-		for(int hot = -8; hot <= 12; hot += 4) {
+		for(int hot = -12; hot <= 12; hot += 4) {
 			List<String> cur = hotnessTest(hot);
 			ReadWriteTrace.writeFile(cur, output.concat(String.valueOf(hot)));
 		}
@@ -43,7 +43,7 @@ public class Main {
 		List<String> res = new ArrayList<String>();
 		
 		//soft
-		
+		/*
 		int index = 2;
 		int player[][] = {
 				{1, 2},
@@ -52,23 +52,17 @@ public class Main {
 				{1, 5},
 				{1, 6}
 		};
-		
+		*/
 		//hard
-		/*
+		
 		int index = 7;
 		int player[][] = {
-				{3, 4},
 				{3, 5},
 				{2, 7},
 				{3, 7},
 				{2, 9},
-				{2, 10},
-				{3, 10},
-				{4, 10},
-				{5, 10},
-				{6, 10}
+				{2, 10}
 		};
-		*/
 		String stras[] = {Strategy.DOUBLE, Strategy.HIT, Strategy.STAND};
 		
 		PokerCard dealerCard = null, playFirstCard = null, playSecondCard = null;
@@ -96,7 +90,7 @@ public class Main {
 	}
 	
 	public static double winnings(PokerCard dealerCard, PokerCard playFirstCard, PokerCard playSecondCard, String stra, int hot) {
-		int round = 10000;
+		int round = 100*1000;
 		int r = 0;
 		double sumbets = 0;
 		Strategy dealerStra = new Strategy();
@@ -133,9 +127,9 @@ public class Main {
 				OneHand curhand = lei.getOneHand(j);
 				
 				if(stra.equals(Strategy.HIT)) {
-					if(curhand.softHand() == true) {
+					if(curhand.playerCardValue() < 12) {
 						lei.getOneHand(j).hit(deck.drawCard());
-						//j--;
+						j--;
 					}
 				} else if(stra.equals(Strategy.STAND)) {
 					continue;
@@ -242,8 +236,10 @@ public class Main {
 				
 				String stra = x.PlayerStrategy(curhand, firstCard.getTTValue(), true, true);	
 				if(stra.equals(Strategy.HIT)) {
-					lei.getOneHand(j).hit(deck.drawCard());
-					j--;
+					if(curhand.playerCardValue() < 12) {
+						lei.getOneHand(j).hit(deck.drawCard());
+						j--;
+					}
 				} else if(stra.equals(Strategy.STAND)) {
 					continue;
 				} else if(stra.equals(Strategy.DOUBLE)) {
