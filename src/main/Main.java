@@ -129,7 +129,7 @@ public class Main {
 				OneHand curhand = lei.getOneHand(j);
 				
 				if(stra.equals(Strategy.HIT)) {
-					if(curhand.numberOfCards() == 2 || curhand.playerCardValue() < 12) {
+					if(curhand.numberOfCards() == 2 || curhand.softHandValue() < 12) {
 						lei.getOneHand(j).hit(deck.drawCard());
 						j--;
 					}
@@ -164,11 +164,11 @@ public class Main {
 			
 			//sum up
 
-			int dvalue = dealer.getOneHand(0).playerCardValue();
+			int dvalue = dealer.getOneHand(0).softHandValue();
 			
 			for(int j = 0; j < lei.numberOfHands(); ++j) {
 				OneHand curHand = lei.getOneHand(j);
-				int myvalue = curHand.playerCardValue();
+				int myvalue = curHand.softHandValue();
 				//Log.d("player", gson.toJson(curHand));
 				double bet = curHand.getBet();
 				if(myvalue > 21) {
@@ -238,7 +238,7 @@ public class Main {
 				
 				String stra = x.PlayerStrategy(curhand, firstCard.getTTValue(), true, true);	
 				if(stra.equals(Strategy.HIT)) {
-					if(curhand.numberOfCards() == 2 || curhand.playerCardValue() < 12) {
+					if(curhand.numberOfCards() == 2 || curhand.softHandValue() < 12) {
 						lei.getOneHand(j).hit(deck.drawCard());
 						j--;
 					}
@@ -273,7 +273,7 @@ public class Main {
 			
 			//sum up
 
-			int dvalue = dealer.getOneHand(0).playerCardValue();
+			int dvalue = dealer.getOneHand(0).softHandValue();
 			if(dvalue < 17) {
 				Log.error(TAG, dvalue);
 			} else if(dvalue > 21) {
@@ -285,7 +285,7 @@ public class Main {
 			
 			for(int j = 0; j < lei.numberOfHands(); ++j) {
 				OneHand curHand = lei.getOneHand(j);
-				int myvalue = curHand.playerCardValue();
+				int myvalue = curHand.softHandValue();
 				//Log.d("player", gson.toJson(curHand));
 				double bet = curHand.getBet();
 				if(myvalue > 21) {
@@ -392,13 +392,13 @@ public class Main {
 			//sum up
 
 			int firstcard = dealer.getOneHand(0).firstCard().getTTValue();
-			int dvalue = dealer.getOneHand(0).playerCardValue();
+			int dvalue = dealer.getOneHand(0).softHandValue();
 			if(dvalue < 17) {
 				Log.error(TAG, dvalue);
 			}
 			for(int j = 0; j < lei.numberOfHands(); ++j) {
 				OneHand curHand = lei.getOneHand(j);
-				int myvalue = curHand.playerCardValue();
+				int myvalue = curHand.softHandValue();
 				//Log.d(gson.toJson(curHand), dvalue, firstcard);
 				double bet = curHand.getBet();
 				if(myvalue > 21) {

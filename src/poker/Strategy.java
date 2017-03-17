@@ -69,7 +69,7 @@ public class Strategy {
 	{
 		if(hand.softHand())
 		{
-			if(hand.playerCardValue() < 18)
+			if(hand.softHandValue() < 18)
 			{
 				return HIT;
 		    }
@@ -81,7 +81,7 @@ public class Strategy {
 		}
 		else
 		{
-			if(hand.playerCardValue()<17)
+			if(hand.softHandValue()<17)
 			{
 				return HIT;
 		    }
@@ -136,7 +136,7 @@ public class Strategy {
 	public String softHandStrategy(OneHand softhand, int dealerFirstCard) {
 		
 		int playerSumExcpAce = 0;
-		playerSumExcpAce = softhand.playerCardValue()-2-11;
+		playerSumExcpAce = softhand.softHandValue()-2-11;
 		if(playerSumExcpAce > 7) {
 			playerSumExcpAce = 7;
 		}
@@ -163,8 +163,8 @@ public class Strategy {
 	
 	public String hardHandStrategy(OneHand hand, int dealerFirstCard) {
 		int playerSumCard = 0;
-		if (hand.playerCardValue()<18) {
-			playerSumCard = hand.playerCardValue()-5;
+		if (hand.softHandValue()<18) {
+			playerSumCard = hand.softHandValue()-5;
 		} else {
 			playerSumCard = 13;
 		}

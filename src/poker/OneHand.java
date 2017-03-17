@@ -13,12 +13,19 @@ public class OneHand {
 	private static int kBustThreshold = 999;
 	
 
+	private int numberOfAce;
+	private int handValue;
+	
 	public OneHand() {
 		//dealer's hand no bet
+		numberOfAce = 0;
+		handValue = 0;
 	}
 	
 	//constructor
 	public OneHand(double bet) {
+		numberOfAce = 0;
+		handValue = 0;
 		this.bet_ = bet;
 	}
 	
@@ -35,14 +42,22 @@ public class OneHand {
 		return this.hand_.size();
 	}
 	
+	
+	//only entrance where the object accept Card
 	public void hit(PokerCard card) {
+		if(card.getValue() == 1) {
+			this.numberOfAce++;
+		}
+		this.handValue += card.getTTValue();
+		if (this.handValue > 21) {
+			this.handValue = kBustThreshold;
+		}
 		this.hand_.add(card);
 	}
 	
 
 	
 	//to actual split
-	//agreement: do not change Lei's code
 	public OneHand split() 
 	{
 		assert this.hand_.size() == 2;
@@ -81,71 +96,30 @@ public class OneHand {
 			return false;
 		}
 	}
+	
+	//Ace is 1
+	public int hardHandValue() {
+		return this.handValue;
+	}
 
-	//the value of onehand
-	public int playerCardValue() 
+	//Ace can be 11 (not necessary)
+	public int softHandValue() 
 	{
-		int numOfAce = 0;
-		int handvalue_ = 0;
-		for (int i = 0; i < hand_.size(); ++i)
-		{
-			if (hand_.get(i).getValue() >= 10)
-			{
-				handvalue_ += 10;
-			}
-			else 
-			{
-				handvalue_ += hand_.get(i).getValue();
-			}
-
-			if (hand_.get(i).getValue() == 1)
-			{
-				numOfAce++;
-			}
+		if (this.handValue < 12 && this.numberOfAce > 0) {
+			return this.handValue + 10;
+		} else {
+			return this.handValue;
 		}
-		if (handvalue_ < 12 && numOfAce > 0)
-		{
-			handvalue_ += 10;
-			numOfAce--;
-		}
-		if (handvalue_ > 21) 
-		{
-			handvalue_ = kBustThreshold;
-		}
-		return handvalue_;
 	}
 	
 	public boolean softHand()
 	{
-		if(isBlackJack()||isPairs())
-		{
+		if(isBlackJack()||isPairs()) {
 			return false;
-		}
-		else
-		{
-			int numOfAce = 0;
-			int handvalue_ = 0;
-		    for (int i = 0; i < hand_.size(); i++)
-		    {
-			     if (hand_.get(i).getValue() >= 10)
-			     {
-				     handvalue_ += 10;
-			     }
-			     else 
-			     {
-			    	 handvalue_ += hand_.get(i).getValue();
-			     }
-			     if (hand_.get(i).getValue() == 1)
-			     {
-			    	 numOfAce++;
-			     }
-			     }
-		    if (handvalue_ < 12 && numOfAce > 0)
-		    {
+		} else {
+		    if (this.handValue < 12 && this.numberOfAce > 0) {
 		    	return true;
-		    }
-		    else
-		    {
+		    } else {
 		    	return false;
 		    }
          }
