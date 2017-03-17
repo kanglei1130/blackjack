@@ -55,13 +55,15 @@ public class Main {
 		*/
 		//hard
 		
-		int index = 8;
+		int index = 13;
 		int player[][] = {
-				{3, 5},
+/*				{3, 5},
 				{2, 7},
 				{3, 7},
 				{2, 9},
-				{2, 10}
+				*/
+				{3, 10},
+				{4, 10},				
 		};
 		String stras[] = {Strategy.DOUBLE, Strategy.HIT, Strategy.STAND};
 		
