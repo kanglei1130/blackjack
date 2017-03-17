@@ -55,7 +55,7 @@ public class Main {
 		*/
 		//hard
 		
-		int index = 7;
+		int index = 8;
 		int player[][] = {
 				{3, 5},
 				{2, 7},
@@ -127,7 +127,7 @@ public class Main {
 				OneHand curhand = lei.getOneHand(j);
 				
 				if(stra.equals(Strategy.HIT)) {
-					if(curhand.playerCardValue() < 12) {
+					if(curhand.numberOfCards() == 2 || curhand.playerCardValue() < 12) {
 						lei.getOneHand(j).hit(deck.drawCard());
 						j--;
 					}
@@ -236,7 +236,7 @@ public class Main {
 				
 				String stra = x.PlayerStrategy(curhand, firstCard.getTTValue(), true, true);	
 				if(stra.equals(Strategy.HIT)) {
-					if(curhand.playerCardValue() < 12) {
+					if(curhand.numberOfCards() == 2 || curhand.playerCardValue() < 12) {
 						lei.getOneHand(j).hit(deck.drawCard());
 						j--;
 					}
