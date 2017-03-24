@@ -44,6 +44,7 @@ public class Main {
 		
 		//soft
 		
+		/*
 		int index = 2;
 		int player[][] = {
 				{1, 2},
@@ -52,23 +53,27 @@ public class Main {
 				{1, 5},
 				{1, 6}
 		};
+		*/
 		//hard
 		
 		/*
-		int index = 8;
+		int index = 11;
 		int player[][] = {
-				{3, 5},
-				{2, 7},
-				{3, 7},
-				{2, 9},
-				{3, 10},
-				{4, 10},				
+				{4, 7}
 		};
 		*/
-		String stras[] = {Strategy.DOUBLE, Strategy.HIT, Strategy.STAND};
+		
+		//pair
+		int index = 0;
+		int player [][] = {
+				{4, 5},
+				{9, 9}
+		};
+		
+		String stras[] = {Strategy.STAND, Strategy.DOUBLE, Strategy.HIT};
 		
 		PokerCard dealerCard = null, playFirstCard = null, playSecondCard = null;
-		for(int upcard = 2; upcard <= 6; ++upcard) {
+		for(int upcard = 2; upcard <= 10; ++upcard) {
 			dealerCard = new PokerCard(upcard, PokerCard.SPADE);
 			for(int i = 0; i < player.length; ++i) {
 				playFirstCard = new PokerCard(player[i][0], PokerCard.CLUB);
@@ -129,10 +134,10 @@ public class Main {
 				OneHand curhand = lei.getOneHand(j);
 				
 				if(stra.equals(Strategy.HIT)) {
-					if(curhand.hardHandValue() >= 13 || curhand.softHandValue() > 17) {
+					if(!dealerCard.isSmallCard() && (curhand.hardHandValue() >= 17 || curhand.softHandValue() > 17)) {
 						continue;
 					}
-					if(curhand.hardHandValue() == 12 && dealerCard.getValue() > 3) {
+					if(dealerCard.isSmallCard() && (curhand.hardHandValue() >= 12 || curhand.softHandValue() > 17)) {
 						continue;
 					}
 					lei.getOneHand(j).hit(deck.drawCard());

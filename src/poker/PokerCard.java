@@ -34,6 +34,13 @@ public class PokerCard {
 		return value_;
 	}
 	
+	public boolean isBigCard() {
+		return this.getTTValue() == 10 || this.value_ == 1;
+	}
+	public boolean isSmallCard() {
+		return this.value_ >= 2 && this.value_ <= 6;
+	}
+	
 	public int getTTValue() 
 	{
 		if(this.value_>9)
