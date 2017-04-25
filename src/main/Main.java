@@ -44,6 +44,7 @@ public class Main {
 		List<String> res = new ArrayList<String>();
 		
 		//soft
+		
 		/*
 		int index = 2;
 		int player[][] = {
@@ -122,7 +123,6 @@ public class Main {
 			//player moves
 			for(int j = 0; j < lei.numberOfHands(); ++j) {
 				OneHand curhand = lei.getOneHand(j);
-				
 				if(stra.equals(Constants.HIT)) {
 					/*
 					if(curhand.numberOfCards() == 2 || curhand.softHandValue() < 12) {
