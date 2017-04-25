@@ -1,14 +1,11 @@
 package poker;
 
+import utility.Constants;
 import utility.Log;
 
 public class Strategy {
 	
-	//enum 
-	public static final String HIT = "H"; 
-	public static final String DOUBLE = "D";
-	public static final String SPLIT = "P";
- 	public static final String STAND = "S";
+
 
  	private static String TAG = "Strategy";
 	
@@ -26,11 +23,11 @@ public class Strategy {
 			{"H", "H", "D", "D", "D", "D", "H","H", "H","H"}, //9
 			{"H", "D", "D", "D", "D", "D", "D","D", "D","H"}, //10
 			{"H", "D", "D", "D", "D", "D", "D","D", "D","D"}, //11
-			{"H", "S", "S", "S", "S", "S", "H","H", "H","H"}, //12
+			{"H", "H", "H", "S", "S", "S", "H","H", "H","H"}, //12
 			{"H", "S", "S", "S", "S", "S", "H","H", "H","H"}, //13
-			{"H", "S", "S", "S", "S", "S", "H","H", "H","S"}, //14
-			{"H", "S", "S", "S", "S", "S", "H","H", "S","H"}, //15
-			{"H", "S", "S", "S", "S", "S", "S","S", "H","H"}, //16
+			{"H", "S", "S", "S", "S", "S", "H","H", "H","H"}, //14
+			{"H", "S", "S", "S", "S", "S", "H","H", "H","H"}, //15
+			{"H", "S", "S", "S", "S", "S", "H","H", "H","H"}, //16
 			{"S", "S", "S", "S", "S", "S", "S","S", "S","S"}, //17
 			{"S", "S", "S", "S", "S", "S", "S","S", "S","S"}, //18
 	};
@@ -63,31 +60,45 @@ public class Strategy {
 			{"S", "P", "P", "P", "P", "P", "S", "P", "P", "S"}, //9
 			{"S", "S", "S", "S", "S", "S", "S", "S", "S", "S"},	//10
 	};
+	
+	
+	public String bestPairStrategy(OneHand hand, PokerCard card, int hot) {
+		return null;
+	}
+	public String bestSoftHandStrategy(OneHand hand, PokerCard card, int hot) {
+		return null;
+	}
+	public String bestHardHandStrategy(OneHand hand, PokerCard card, int hot) {
+		return null;
+	}
+	
+	public String BestStrategy(OneHand hand, PokerCard card, int hot) {
+		String stra = Constants.STAND;
+		if(hand.isPairs()) {
+			stra = bestPairStrategy(hand, card, hot);
+		} else if(hand.softHand()) {
+			stra = bestSoftHandStrategy(hand, card, hot);
+		} else {
+			stra = bestHardHandStrategy(hand, card, hot);
+		}
+		return stra;
+	}
+	
 		
 	//dealer's strategy
 	public String DealerStrategy(OneHand hand) 
 	{
-		if(hand.softHand())
-		{
-			if(hand.softHandValue() < 18)
-			{
-				return HIT;
-		    }
-			
-			else   
-			{
-				return STAND;
+		if(hand.softHand()) {
+			if(hand.softHandValue() < 18) {
+				return Constants.HIT;
+		    } else {
+				return Constants.STAND;
 			}	
-		}
-		else
-		{
-			if(hand.softHandValue()<17)
-			{
-				return HIT;
-		    }
-			else   
-			{
-				return STAND;
+		} else {
+			if(hand.softHandValue() < 17) {
+				return Constants.HIT;
+		    } else {
+				return Constants.STAND;
 			}	
 		}
 	}
@@ -95,22 +106,17 @@ public class Strategy {
 	//player's strategy
 	public String PlayerStrategy(OneHand hand, int dealerFirstCard, boolean allowDouble, boolean allowSplit)
 	{
-		String stra = STAND;
-		if(hand.isPairs() && allowSplit == true)
-		{
+		String stra = Constants.STAND;
+		if(hand.isPairs() && allowSplit == true) {
 			stra = pairStrategy(hand, dealerFirstCard);
-		}
-		else if(hand.softHand())
-		{
+		} else if(hand.softHand()) {
 			stra = softHandStrategy(hand, dealerFirstCard);
-		}
-		else
-		{
+		} else {
 			stra = hardHandStrategy(hand, dealerFirstCard);
 		}
 				
-		if(allowDouble == false && stra.equals(DOUBLE)) {
-			stra = HIT;
+		if(allowDouble == false && stra.equals(Constants.DOUBLE)) {
+			stra = Constants.HIT;
 		}
 		return stra;
 	}
@@ -120,13 +126,13 @@ public class Strategy {
 		int dealerFirstCardIndex = dealerFirstCard - 1;
 		String strategy = pairs[playerCard][dealerFirstCardIndex];
 		if (strategy.equals("P")) {
-			return SPLIT;
+			return Constants.SPLIT;
 		} else if (strategy.equals("H")) {
-			return HIT;
+			return Constants.HIT;
 		} else if (strategy.equals("D")) {
-			return DOUBLE;
+			return Constants.DOUBLE;
 		} else if (strategy.equals("S")) {
-			return STAND;
+			return Constants.STAND;
 		} else {
 			Log.error(TAG, "lack strategy split");
 			return null;
@@ -148,13 +154,13 @@ public class Strategy {
 		String strategy = soft[playerSumExcpAce][dealerFirstCardIndex];
 			
 		if (strategy.equals("D")) {
-			return DOUBLE;
+			return Constants.DOUBLE;
 		} else if (strategy.equals("H")) {
-			return HIT;
+			return Constants.HIT;
 		} else if (strategy.equals("D")) {
-			return DOUBLE;
+			return Constants.DOUBLE;
 		} else if (strategy.equals("S")) {
-			return STAND;
+			return Constants.STAND;
 		} else {
 			Log.error(TAG, "lack strategy softhand");
 			return null;
@@ -173,11 +179,11 @@ public class Strategy {
 		String strategy = hard[playerSumCard][dealerFirstCardIndex];
 			
 		if (strategy.equals("H")) {
-			return HIT;
+			return Constants.HIT;
 		} else if (strategy.equals("D")) {
-			return DOUBLE;
+			return Constants.DOUBLE;
 		} else if (strategy.equals("S")) {
-			return STAND;
+			return Constants.STAND;
 		} else {
 			Log.error(TAG, "lack strategy hard");
 			return null;
