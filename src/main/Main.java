@@ -57,11 +57,13 @@ public class Main {
 		*/
 		//hard
 		
-		int index = 17;
+		int index = 9;
 		int player[][] = {
-				{7, 10},				
+				{2, 7},
+				{2, 8},
+				{2, 9}
 		};
-		String stras[] = {Constants.HIT, Constants.STAND};
+		String stras[] = {Constants.HIT, Constants.DOUBLE};
 		
 		PokerCard dealerCard = null, playFirstCard = null, playSecondCard = null;
 		for(int upcard = 7; upcard <= 10; ++upcard) {
@@ -124,17 +126,14 @@ public class Main {
 			for(int j = 0; j < lei.numberOfHands(); ++j) {
 				OneHand curhand = lei.getOneHand(j);
 				if(stra.equals(Constants.HIT)) {
-					/*
-					if(curhand.numberOfCards() == 2 || curhand.softHandValue() < 12) {
-						lei.getOneHand(j).hit(deck.drawCard());
+					curhand.hit(deck.drawCard());					
+					if(curhand.hardHandValue() < 17) {
 						j--;
 					}
-					*/
-					lei.getOneHand(j).hit(deck.drawCard());
 				} else if(stra.equals(Constants.STAND)) {
 					continue;
 				} else if(stra.equals(Constants.DOUBLE)) {
-					lei.getOneHand(j).doubleDown(deck.drawCard());
+					curhand.doubleDown(deck.drawCard());
 					continue;		
 				} else if(stra.equals(Constants.SPLIT)) {
 					OneHand oneMore = curhand.split();
