@@ -34,7 +34,7 @@ public class Main {
 		
 		//iterateOneHand();
 
-		for(int hot = -6; hot <= 6; hot += 1) {
+		for(int hot = -4; hot <= 4; hot += 1) {
 			List<String> cur = hotnessTest(hot);
 			ReadWriteTrace.writeFile(cur, output.concat(String.valueOf(hot)));
 		}
@@ -57,13 +57,15 @@ public class Main {
 		*/
 		//hard
 		
-		int index = 9;
+		int index = 12;
 		int player[][] = {
-				{2, 7},
-				{2, 8},
-				{2, 9}
+				{10, 2},
+				{10, 3},
+				{10, 4},
+				{10, 5},
+				{10, 6}
 		};
-		String stras[] = {Constants.HIT, Constants.DOUBLE};
+		String stras[] = {Constants.HIT, Constants.STAND};
 		
 		PokerCard dealerCard = null, playFirstCard = null, playSecondCard = null;
 		for(int upcard = 7; upcard <= 10; ++upcard) {
@@ -126,10 +128,12 @@ public class Main {
 			for(int j = 0; j < lei.numberOfHands(); ++j) {
 				OneHand curhand = lei.getOneHand(j);
 				if(stra.equals(Constants.HIT)) {
-					curhand.hit(deck.drawCard());					
+					curhand.hit(deck.drawCard());	
+					/*
 					if(curhand.hardHandValue() < 17) {
 						j--;
 					}
+					*/
 				} else if(stra.equals(Constants.STAND)) {
 					continue;
 				} else if(stra.equals(Constants.DOUBLE)) {
