@@ -7,7 +7,40 @@ public class BestStrategy {
 		return null;
 	}
 	public static String bestSoftHandStrategy(OneHand hand, PokerCard card, int hot) {
-		return null;
+		int value = hand.softHandValue();		
+		int dealer = card.getTTValue();
+		boolean allowDouble = (hand.numberOfCards() == 2);
+		
+		if(value == 20) {
+			if(!allowDouble) {
+				return Constants.STAND;
+			}
+			if(dealer == 6 && hot >= 4) {
+				return Constants.DOUBLE;
+			}
+			if(dealer == 5 && hot >= 5) {
+				return Constants.DOUBLE;
+			}
+		}
+		if(value == 19) {
+			if(!allowDouble) {
+				return Constants.STAND;
+			}
+			if(dealer == 6 && hot >= -1) {
+				return Constants.DOUBLE;
+			}
+			if(dealer == 5 && hot >= 2) {
+				return Constants.DOUBLE;
+			}
+			if(dealer == 4 && hot >= 3) {
+				return Constants.DOUBLE;
+			}
+			if(dealer == 3 && hot >= 4) {
+				return Constants.DOUBLE;
+			}
+		}
+		
+		return Constants.STAND;
 	}
 	public static String bestHardHandStrategy(OneHand hand, PokerCard card, int hot) {
 		int value = hand.hardHandValue();		
@@ -177,20 +210,32 @@ public class BestStrategy {
 				return Constants.DOUBLE;
 			}
 			if(dealer >= 2 && dealer <= 6) {
-				
+				if(hot >= -3) {
+					return Constants.DOUBLE;
+				}
+				if(dealer >= 3 && dealer <= 6) {
+					return Constants.DOUBLE;
+				}
+				if(dealer == 2 && hot <= -4) {
+					return Constants.HIT;
+				}
 			}
 			return Constants.HIT;
 		}
 		//the interesting value is between 8 and 16
 		//double cases
 		if(value == 8) {
-			if(dealer == 6 && hot >= 1) {
+			
+			if(dealer == 6 && hot >= -1) {
 				return Constants.DOUBLE;
 			}
-			if(dealer == 5 && hot >= 3) {
+			if(dealer == 5 && hot >= 1) {
 				return Constants.DOUBLE;
 			}
-			if(dealer == 4 && hot >= 5) {
+			if(dealer == 4 && hot >= 3) {
+				return Constants.DOUBLE;
+			}
+			if(dealer == 3 && hot >= 5) {
 				return Constants.DOUBLE;
 			}
 			return Constants.HIT;

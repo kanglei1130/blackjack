@@ -43,13 +43,10 @@ public class PokerCard {
 	
 	public int getTTValue() 
 	{
-		if(this.value_>9)
-		{
+		if(this.value_ >= 10) {
 			return 10;
-		}
-		else
-		{
-		return value_;
+		} else {
+			return value_;
 		}
 	}
 	

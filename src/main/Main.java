@@ -60,12 +60,12 @@ public class Main {
 		
 		int index = 9;
 		int player[][] = {
-				{7, 2},
+				{1, 9},
 		};
-		String stras[] = {Constants.HIT, Constants.DOUBLE};
+		String stras[] = {Constants.DOUBLE, Constants.STAND};
 		
 		PokerCard dealerCard = null, playFirstCard = null, playSecondCard = null;
-		for(int upcard = 1; upcard <= 10; ++upcard) {
+		for(int upcard = 2; upcard <= 6; ++upcard) {
 			dealerCard = new PokerCard(upcard, PokerCard.SPADE);
 			for(int i = 0; i < player.length; ++i) {
 				playFirstCard = new PokerCard(player[i][0], PokerCard.CLUB);
@@ -117,7 +117,7 @@ public class Main {
 				}
 				continue;
 			} else if(dealerHand.isBlackJack()) {
-				//sumbets -= hand.getBet();
+				sumbets -= hand.getBet();
 				continue;
 			}
 			
@@ -125,12 +125,9 @@ public class Main {
 			for(int j = 0; j < lei.numberOfHands(); ++j) {
 				OneHand curhand = lei.getOneHand(j);
 				if(stra.equals(Constants.HIT)) {
-					String bestStra = BestStrategy.bestHardHandStrategy(curhand, dealerCard, hot);
-					if(bestStra.contains(Constants.HIT)) {
-						curhand.hit(deck.drawCard());	
-					} else {
-						continue;
-					}
+					curhand.hit(deck.drawCard());	
+					stra = BestStrategy.BestStrategy(curhand, dealerCard, hot);
+					j--;
 				} else if(stra.equals(Constants.STAND)) {
 					continue;
 				} else if(stra.equals(Constants.DOUBLE)) {

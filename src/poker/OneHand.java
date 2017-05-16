@@ -64,6 +64,12 @@ public class OneHand {
 		OneHand anotherhand = new OneHand(this.bet_);
 		PokerCard card = this.hand_.remove(1);
 		anotherhand.hit(card);
+		
+		this.handValue -= card.getTTValue();
+		if(card.getTTValue() == 1) {
+			this.numberOfAce--;
+		}
+		
 		return anotherhand;
 	}
 
