@@ -3,6 +3,7 @@ package main;
 import java.util.ArrayList;
 import java.util.List;
 
+import poker.BestStrategy;
 import poker.Deck;
 import poker.OneHand;
 import poker.Player;
@@ -34,7 +35,7 @@ public class Main {
 		
 		//iterateOneHand();
 
-		for(int hot = -4; hot <= 4; hot += 1) {
+		for(int hot = -5; hot <= 5; hot += 1) {
 			List<String> cur = hotnessTest(hot);
 			ReadWriteTrace.writeFile(cur, output.concat(String.valueOf(hot)));
 		}
@@ -57,18 +58,14 @@ public class Main {
 		*/
 		//hard
 		
-		int index = 12;
+		int index = 9;
 		int player[][] = {
-				{10, 2},
-				{10, 3},
-				{10, 4},
-				{10, 5},
-				{10, 6}
+				{7, 2},
 		};
-		String stras[] = {Constants.HIT, Constants.STAND};
+		String stras[] = {Constants.HIT, Constants.DOUBLE};
 		
 		PokerCard dealerCard = null, playFirstCard = null, playSecondCard = null;
-		for(int upcard = 7; upcard <= 10; ++upcard) {
+		for(int upcard = 1; upcard <= 10; ++upcard) {
 			dealerCard = new PokerCard(upcard, PokerCard.SPADE);
 			for(int i = 0; i < player.length; ++i) {
 				playFirstCard = new PokerCard(player[i][0], PokerCard.CLUB);
@@ -120,7 +117,7 @@ public class Main {
 				}
 				continue;
 			} else if(dealerHand.isBlackJack()) {
-				sumbets -= hand.getBet();
+				//sumbets -= hand.getBet();
 				continue;
 			}
 			
@@ -128,12 +125,12 @@ public class Main {
 			for(int j = 0; j < lei.numberOfHands(); ++j) {
 				OneHand curhand = lei.getOneHand(j);
 				if(stra.equals(Constants.HIT)) {
-					curhand.hit(deck.drawCard());	
-					/*
-					if(curhand.hardHandValue() < 17) {
-						j--;
+					String bestStra = BestStrategy.bestHardHandStrategy(curhand, dealerCard, hot);
+					if(bestStra.contains(Constants.HIT)) {
+						curhand.hit(deck.drawCard());	
+					} else {
+						continue;
 					}
-					*/
 				} else if(stra.equals(Constants.STAND)) {
 					continue;
 				} else if(stra.equals(Constants.DOUBLE)) {

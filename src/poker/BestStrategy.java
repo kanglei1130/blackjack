@@ -3,97 +3,206 @@ package poker;
 import utility.Constants;
 
 public class BestStrategy {
-	public String bestPairStrategy(OneHand hand, PokerCard card, int hot) {
+	public static String bestPairStrategy(OneHand hand, PokerCard card, int hot) {
 		return null;
 	}
-	public String bestSoftHandStrategy(OneHand hand, PokerCard card, int hot) {
+	public static String bestSoftHandStrategy(OneHand hand, PokerCard card, int hot) {
 		return null;
 	}
-	public String bestHardHandStrategy(OneHand hand, PokerCard card, int hot) {
+	public static String bestHardHandStrategy(OneHand hand, PokerCard card, int hot) {
 		int value = hand.hardHandValue();		
 		int dealer = card.getTTValue();
 		String res = Constants.HIT;
+		boolean allowDouble = (hand.numberOfCards() == 2);
 
 		if(value >= 17) {
 			return Constants.STAND;
-		}
-		if(value <= 7) {
-			return Constants.HIT;
-		}
-		
-		//value between 12 and 16
-		if(value >= 12 && value <= 16) {
-			//dealer between 2 and 6
+		} 
+		if(value==16) {
 			if(dealer >= 2 && dealer <= 6) {
-				if(hot >=2) {
+				return Constants.STAND;
+			}
+			if(dealer == 7 || dealer ==8) {
+				return Constants.HIT;
+			}
+			if(dealer == 9) {
+				if(hot >= 4) {
 					return Constants.STAND;
-				} else if(1 == hot) {
-					if(value == 12 && (dealer == 2 || dealer == 3)) {
-						return Constants.HIT;
-					} else {
-						return Constants.STAND;
-					}
-				} else if(0 == hot || -1 == hot) {
-					if(value == 12 && (dealer == 2 || dealer == 3 || dealer == 4)) {
-						return Constants.HIT;
-					} else {
-						return Constants.STAND;
-					}
-				} else if(-2 == hot || -3 == hot) {
-					if(value == 12 && (dealer == 2 || dealer == 3 || dealer == 4 || dealer == 5)) {
-						return Constants.HIT;
-					} else if(value ==13 && dealer == 2) {
-						return Constants.HIT;
-					} else {
-						return Constants.STAND;
-					}
-				} else if(-4 == hot) {
-					if(value == 12 && (dealer == 2 || dealer == 3 || dealer == 4 || dealer == 5)) {
-						return Constants.HIT;
-					} else if(value ==13 && (dealer == 2 || dealer == 3)) {
-						return Constants.HIT;
-					} else {
-						return Constants.STAND;
-					}
 				} else {
-				
+					return Constants.HIT;
+				}
+			}
+			if(dealer == 10) {
+				if(hot >=0 ) {
+					return Constants.STAND;
+				} else {
+					return Constants.HIT;
+				}
+			} 
+			if(dealer == 1) {
+				if(hot >= 4) {
+					return Constants.STAND;
+				} else {
+					return Constants.HIT;
 				}
 			}
 		}
-		
-		//the interesting value is between 8 and 16
-		//double cases
-		if(value == 8) {
-			if(dealer == 6 && hot >= 1) {
-				res = Constants.DOUBLE;
+		if(value==15) {
+			if(dealer >= 2 && dealer <= 6) {
+				if(hot <= -5 && dealer == 2) {
+					//very rare case
+					return Constants.HIT;
+				}
+				return Constants.STAND;
 			}
-			if(dealer == 5 && hot >= 3) {
-				res = Constants.DOUBLE;
+			if(dealer >= 7 && dealer <=9) {
+				return Constants.HIT;
 			}
-			if(dealer == 4 && hot >= 5) {
-				res = Constants.DOUBLE;
+			if(dealer == 10) {
+				if(hot <= 3) {
+					return Constants.HIT;
+				} else {
+					return Constants.STAND;
+				}
+			}
+			if(dealer == 1) {
+				if(hot <= 4) {
+					return Constants.HIT;
+				} else {
+					return Constants.STAND;
+				}
 			}
 		}
-		if(value == 9) {
-			if(dealer <= 6 && dealer >=2 && hot >= -3) {
-				return Constants.DOUBLE;
+		if(value==14) {
+			if(dealer >= 2 && dealer <= 6) {
+				if(hot>=-4) {
+					return Constants.STAND;
+				} 
+				if(hot <= -5 && (dealer == 2 || dealer == 3)) {
+					return Constants.HIT;
+				} 
+				return Constants.STAND;
 			}
-			if(dealer <= 6 && dealer >=3 && hot == -4) {
-				return Constants.DOUBLE;
+			if(dealer >=7 && dealer <= 10) {
+				return Constants.HIT;
 			}
-			if(dealer == 6 && hot >= -5) {
+			if(dealer==1) {
+				return Constants.HIT;
+			}
+		}
+		if(value==13) {
+			if(dealer >= 2 && dealer <= 6) {
+				if(hot>=-2) {
+					return Constants.STAND;
+				} 
+				if(hot <= -3 && dealer == 2) {
+					return Constants.HIT;
+				} 
+				if(hot <= -4 && dealer == 3) {
+					return Constants.HIT;
+				}
+				if(hot <= -5 && dealer ==4) {
+					return Constants.HIT;
+				}
+				return Constants.STAND;
+			}
+			if(dealer >=7 && dealer <= 10) {
+				return Constants.HIT;
+			}
+			if(dealer==1) {
+				return Constants.HIT;
+			}
+		}
+		if(value==12) {
+			if(dealer >= 2 && dealer <= 6) {
+				if(hot >= 2) {
+					return Constants.STAND;
+				} 
+				if(hot <= 1 && (dealer == 2 || dealer == 3)) {
+					return Constants.HIT;
+				}
+				if(hot <= 0 && dealer == 4) {
+					return Constants.HIT;
+				}
+				if(hot <= -3 && dealer == 5) {
+					return Constants.HIT;
+				}
+				if(hot <= -5 && dealer == 6) {
+					return Constants.HIT;
+				}
+				return Constants.STAND;
+				
+			}
+			if(dealer >=7 && dealer <= 10) {
+				return Constants.HIT;
+			}
+			if(dealer==1) {
+				return Constants.HIT;
+			}
+		}
+		
+		if(!allowDouble) {
+			return Constants.HIT;
+		}
+
+		if(value == 11) {
+			if(hot <= -5 && dealer == 1) {
+				return Constants.HIT;
+			} else {
 				return Constants.DOUBLE;
 			}
 		}
 		if(value == 10) {
-			if(dealer <= 6 && dealer >=2) {
+			if(dealer >= 2 && dealer <= 9) {
 				return Constants.DOUBLE;
 			}
+			if(dealer == 10 || dealer == 1) {
+				if(hot <= 0) {
+					return Constants.HIT;
+				} else {
+					return Constants.DOUBLE;
+				}
+			}
 		}
-		return res;
+		
+		if(value == 9) {
+			if(dealer == 1 || dealer == 10 || dealer == 9) {
+				return Constants.HIT;
+			}
+			
+			if(dealer == 8 && hot >= 3) {
+				return Constants.DOUBLE;
+			}
+			if(dealer == 7 && hot >= -2) {
+				return Constants.DOUBLE;
+			}
+			if(dealer >= 2 && dealer <= 6) {
+				
+			}
+			return Constants.HIT;
+		}
+		//the interesting value is between 8 and 16
+		//double cases
+		if(value == 8) {
+			if(dealer == 6 && hot >= 1) {
+				return Constants.DOUBLE;
+			}
+			if(dealer == 5 && hot >= 3) {
+				return Constants.DOUBLE;
+			}
+			if(dealer == 4 && hot >= 5) {
+				return Constants.DOUBLE;
+			}
+			return Constants.HIT;
+		}
+		
+		if(value <= 7) {
+			return Constants.HIT;
+		}
+		return Constants.HIT;
 	}
 	
-	public String BestStrategy(OneHand hand, PokerCard card, int hot) {
+	public static String BestStrategy(OneHand hand, PokerCard card, int hot) {
 		String stra = Constants.STAND;
 		if(hand.isPairs()) {
 			stra = bestPairStrategy(hand, card, hot);
