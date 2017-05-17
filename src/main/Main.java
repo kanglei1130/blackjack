@@ -35,11 +35,14 @@ public class Main {
 		
 		//iterateOneHand();
 
+		
 		for(int hot = -5; hot <= 5; hot += 1) {
 			List<String> cur = hotnessTest(hot);
 			ReadWriteTrace.writeFile(cur, output.concat(String.valueOf(hot)));
 		}
+		
 	}	
+	
 	
 	public static List<String> hotnessTest(int hot) {
 		List<String> res = new ArrayList<String>();
@@ -58,14 +61,14 @@ public class Main {
 		*/
 		//hard
 		
-		int index = 9;
+		int index = 2;
 		int player[][] = {
-				{1, 9},
+				{1, 2},
 		};
-		String stras[] = {Constants.DOUBLE, Constants.STAND};
+		String stras[] = {Constants.HIT, Constants.STAND, Constants.DOUBLE};
 		
 		PokerCard dealerCard = null, playFirstCard = null, playSecondCard = null;
-		for(int upcard = 2; upcard <= 6; ++upcard) {
+		for(int upcard = 3; upcard <= 6; ++upcard) {
 			dealerCard = new PokerCard(upcard, PokerCard.SPADE);
 			for(int i = 0; i < player.length; ++i) {
 				playFirstCard = new PokerCard(player[i][0], PokerCard.CLUB);
@@ -75,13 +78,14 @@ public class Main {
 				for(int j = 0; j < stras.length; ++j) {
 					String stra = stras[j];
 					double bets = winnings(dealerCard, playFirstCard, playSecondCard, stra, hot);
+					Log.d(upcard, hot, stra, bets);
 					if(bestbets < bets) {
 						bestbets = bets;
 						beststra = new String(stra);
 					}
 				}
 				String opt = String.valueOf(upcard) + "," + String.valueOf(i + index) + "," + beststra + "," + String.valueOf(bestbets);
-				Log.d(TAG, opt);
+				//Log.d(TAG, opt);
 				res.add(opt);
 			}
 		}
@@ -93,6 +97,7 @@ public class Main {
 		int r = 0;
 		double sumbets = 0;
 		Strategy dealerStra = new Strategy();
+		String startStra = stra;
 		
 		while(r++ < round) {
 			Deck deck = new Deck(1, hot);
@@ -122,6 +127,7 @@ public class Main {
 			}
 			
 			//player moves
+			stra = startStra;
 			for(int j = 0; j < lei.numberOfHands(); ++j) {
 				OneHand curhand = lei.getOneHand(j);
 				if(stra.equals(Constants.HIT)) {
@@ -161,6 +167,9 @@ public class Main {
 
 			int dvalue = dealer.getOneHand(0).softHandValue();
 			
+			//Gson gson = new Gson();
+			//Log.d(dvalue, gson.toJson(dealer.getOneHand(0)));
+
 			for(int j = 0; j < lei.numberOfHands(); ++j) {
 				OneHand curHand = lei.getOneHand(j);
 				int myvalue = curHand.softHandValue();
@@ -178,7 +187,9 @@ public class Main {
 				} else {
 					//Log.error(TAG, myvalue, dvalue);
 				}
+				//Log.d(myvalue, gson.toJson(curHand));
 			}
+			//Log.d("=========================================================");
 		}
 		return sumbets;
 	}

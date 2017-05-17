@@ -86,7 +86,7 @@ public class Strategy {
 	
 		
 	//dealer's strategy
-	public String DealerStrategy(OneHand hand) 
+	public static String DealerStrategy(OneHand hand) 
 	{
 		if(hand.softHand()) {
 			if(hand.softHandValue() < 18) {

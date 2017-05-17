@@ -39,7 +39,147 @@ public class BestStrategy {
 				return Constants.DOUBLE;
 			}
 		}
-		
+		if(value == 18) {
+			if(dealer == 2) {
+				if(hot >= 0 && allowDouble) {
+					return Constants.DOUBLE;
+				} else {
+					return Constants.STAND;
+				}
+			}
+			if(dealer >= 3 && dealer <= 6) {
+				if(allowDouble) {
+					return Constants.DOUBLE;
+				} else {
+					return Constants.STAND;
+				}
+			}
+			if(dealer == 7 || dealer == 8) {
+				//no matter the hotness, there is small difference
+				//between HIT/STAND
+				return Constants.STAND;
+			}
+			if(dealer == 9 || dealer == 10 || dealer == 1) {
+				return Constants.HIT;
+			}
+			
+		}
+		if(value == 17) {
+			if(dealer == 2) {
+				if(hot >= 1 && allowDouble) {
+					return Constants.DOUBLE;
+				} else {
+					return Constants.HIT;
+				}
+			}
+			if(dealer >= 3 && dealer <= 6) {
+				if(allowDouble) {
+					return Constants.DOUBLE;
+				} else {
+					return Constants.HIT;
+				}
+			}
+		}
+		//make it simple to remember, always hit under soft 17, when against 7,8,9,10,A
+		if(value <= 17) {
+			if(dealer == 2 || dealer == 7 || dealer == 8 || dealer == 9 || dealer == 10 || dealer == 1) {
+				return Constants.HIT;
+			}
+		}
+		///////////////////////////A + 5
+		if(value == 16) {
+			if(dealer == 3) {
+				if(hot >= 3 && allowDouble) {
+					return Constants.DOUBLE;
+				} else {
+					return Constants.HIT;
+				}
+			}
+			if(dealer == 4) {
+				if(hot >= -3 && allowDouble) {
+					return Constants.DOUBLE;
+				} else {
+					return Constants.HIT;
+				}
+			}
+			if(dealer == 5 || dealer == 6) {
+				if(allowDouble) {
+					return Constants.DOUBLE;
+				} else {
+					return Constants.HIT;
+				}
+			}
+		}
+		/////////////////// A + 4
+		if(value <= 15) {
+			if(dealer == 3) {
+				return Constants.HIT;
+			}
+		}
+		if(value == 15) {
+			if(dealer == 4) {
+				if(hot >= 0 && allowDouble) {
+					return Constants.DOUBLE;
+				} else {
+					return Constants.HIT;
+				}
+			}
+			if(dealer == 5 || dealer == 6) {
+				if(allowDouble) {
+					return Constants.DOUBLE;
+				} else {
+					return Constants.HIT;
+				}
+			}
+		}
+		//A + 3
+		if(value == 14) {
+			if(dealer == 4) {
+				if(hot >= 4 && allowDouble) {
+					return Constants.DOUBLE;
+				} else {
+					return Constants.HIT;
+				}
+			}
+			if(dealer == 5) {
+				if(hot >= 0 && allowDouble) {
+					return Constants.DOUBLE;
+				} else {
+					return Constants.HIT;
+				}
+			}
+			if(dealer == 6) {
+				if(hot >= -3 && allowDouble) {
+					return Constants.DOUBLE;
+				} else {
+					return Constants.HIT;
+				}
+			}
+		}
+		//A + 2
+		if(value == 13) {
+			if(dealer == 4) {
+				if(hot >= 5 && allowDouble) {
+					return Constants.DOUBLE;
+				} else {
+					return Constants.HIT;
+				}
+			}
+			if(dealer == 5) {
+				if(hot >= 0 && allowDouble) {
+					return Constants.DOUBLE;
+				} else {
+					return Constants.HIT;
+				}
+			}
+			if(dealer == 6) {
+				if(hot >= -2 && allowDouble) {
+					return Constants.DOUBLE;
+				} else {
+					return Constants.HIT;
+				}
+			}
+		}
 		return Constants.STAND;
 	}
 	public static String bestHardHandStrategy(OneHand hand, PokerCard card, int hot) {
