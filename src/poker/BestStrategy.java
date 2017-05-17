@@ -4,15 +4,23 @@ import utility.Constants;
 
 public class BestStrategy {
 	public static String bestPairStrategy(OneHand hand, PokerCard card, int hot) {
-		int value = hand.hardHandValue();		
+		int value = hand.hardHandValue();	
+		int dealer = card.getTTValue();
 		//Pair of A
 		if(value == 2) {
 			return Constants.SPLIT;
 		}
 		//Pair of 10
 		if(value == 20) {
-			
+			if(dealer == 6 && hot >= 4) {
+				return Constants.SPLIT;
+			} 
+			if(dealer == 5 && hot >= 5) {
+				return Constants.SPLIT;
+			}
+			return Constants.STAND;
 		}
+		
 		return Constants.SPLIT;
 	}
 	public static String bestSoftHandStrategy(OneHand hand, PokerCard card, int hot) {
