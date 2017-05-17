@@ -4,7 +4,16 @@ import utility.Constants;
 
 public class BestStrategy {
 	public static String bestPairStrategy(OneHand hand, PokerCard card, int hot) {
-		return null;
+		int value = hand.hardHandValue();		
+		//Pair of A
+		if(value == 2) {
+			return Constants.SPLIT;
+		}
+		//Pair of 10
+		if(value == 20) {
+			
+		}
+		return Constants.SPLIT;
 	}
 	public static String bestSoftHandStrategy(OneHand hand, PokerCard card, int hot) {
 		int value = hand.softHandValue();		
@@ -21,6 +30,7 @@ public class BestStrategy {
 			if(dealer == 5 && hot >= 5) {
 				return Constants.DOUBLE;
 			}
+			return Constants.STAND;
 		}
 		if(value == 19) {
 			if(!allowDouble) {
@@ -38,6 +48,7 @@ public class BestStrategy {
 			if(dealer == 3 && hot >= 4) {
 				return Constants.DOUBLE;
 			}
+			return Constants.STAND;
 		}
 		if(value == 18) {
 			if(dealer == 2) {
@@ -62,7 +73,6 @@ public class BestStrategy {
 			if(dealer == 9 || dealer == 10 || dealer == 1) {
 				return Constants.HIT;
 			}
-			
 		}
 		if(value == 17) {
 			if(dealer == 2) {
@@ -179,6 +189,10 @@ public class BestStrategy {
 					return Constants.HIT;
 				}
 			}
+		}
+		//A + A
+		if(value == 12) {
+			return Constants.HIT;
 		}
 		return Constants.STAND;
 	}
@@ -387,9 +401,10 @@ public class BestStrategy {
 		return Constants.HIT;
 	}
 	
-	public static String BestStrategy(OneHand hand, PokerCard card, int hot) {
+	public static String BestStrategy(OneHand hand, PokerCard card, int hot, boolean allowSplit) {
 		String stra = Constants.STAND;
-		if(hand.isPairs()) {
+		
+		if(hand.isPairs() && allowSplit) {
 			stra = bestPairStrategy(hand, card, hot);
 		} else if(hand.softHand()) {
 			stra = bestSoftHandStrategy(hand, card, hot);

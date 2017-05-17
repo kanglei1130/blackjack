@@ -61,14 +61,14 @@ public class Main {
 		*/
 		//hard
 		
-		int index = 2;
+		int index = 10;
 		int player[][] = {
-				{1, 2},
+				{10, 10},
 		};
-		String stras[] = {Constants.HIT, Constants.STAND, Constants.DOUBLE};
+		String stras[] = {Constants.STAND, Constants.SPLIT};
 		
 		PokerCard dealerCard = null, playFirstCard = null, playSecondCard = null;
-		for(int upcard = 3; upcard <= 6; ++upcard) {
+		for(int upcard = 1; upcard <= 10; ++upcard) {
 			dealerCard = new PokerCard(upcard, PokerCard.SPADE);
 			for(int i = 0; i < player.length; ++i) {
 				playFirstCard = new PokerCard(player[i][0], PokerCard.CLUB);
@@ -98,6 +98,12 @@ public class Main {
 		double sumbets = 0;
 		Strategy dealerStra = new Strategy();
 		String startStra = stra;
+		boolean allowSplit = false;
+		if(stra.contains(Constants.SPLIT)) {
+			allowSplit = true;
+		} else if(stra.contains(Constants.HIT)) {
+			allowSplit = false;
+		}
 		
 		while(r++ < round) {
 			Deck deck = new Deck(1, hot);
@@ -130,9 +136,14 @@ public class Main {
 			stra = startStra;
 			for(int j = 0; j < lei.numberOfHands(); ++j) {
 				OneHand curhand = lei.getOneHand(j);
+				stra = BestStrategy.BestStrategy(curhand, dealerCard, hot, allowSplit);
+
+				if(lei.numberOfHands() >= 3 && stra.contains(Constants.SPLIT)) {
+					stra = BestStrategy.BestStrategy(curhand, dealerCard, hot, false);
+				}
+				
 				if(stra.equals(Constants.HIT)) {
 					curhand.hit(deck.drawCard());	
-					stra = BestStrategy.BestStrategy(curhand, dealerCard, hot);
 					j--;
 				} else if(stra.equals(Constants.STAND)) {
 					continue;
