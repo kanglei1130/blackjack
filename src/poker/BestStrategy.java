@@ -60,22 +60,103 @@ public class BestStrategy {
 			}
 		}
 		if(dealer == 14) {
-			return Constants.SPLIT;
+			if(dealer >= 2 && dealer <= 7) {
+				return Constants.SPLIT;
+			}
+			if(dealer == 1) {
+				return Constants.HIT;
+			}
+			if(dealer >= 8 && dealer <= 10) {
+				return Constants.HIT;
+			}
 		}
 		if(dealer == 12) {
-			return Constants.SPLIT;
+			if(dealer >= 2 && dealer <= 6) {
+				return Constants.SPLIT;
+			}
+			if(dealer == 7 ) {
+				if(hot <= -3) {
+					return Constants.SPLIT;
+				} else {
+					return Constants.HIT;
+				}
+			}
+			if(dealer >= 8 && dealer <= 10) {
+				return Constants.HIT;
+			}
+			if(dealer==1) {
+				return Constants.HIT;
+			}
 		}
 		if(dealer == 10) {
 			return bestHardHandStrategy(hand, card, hot);
 		}
 		if(dealer == 8) {
-			return Constants.SPLIT;
+			if(dealer == 2) {
+				return Constants.HIT;
+			}
+			if(dealer == 3) {
+				if(hot >= 5) {
+					return Constants.SPLIT;
+				} else {
+					return Constants.HIT;
+				}
+			}
+			if(dealer == 4) {
+				if(hot >= 3) {
+					return Constants.SPLIT;
+				} else {
+					return Constants.HIT;
+				}
+			}
+			if(dealer == 5 || dealer == 6) {
+				if(hot >= -1) {
+					return Constants.SPLIT;
+				}
+				if(hot >= -4 && dealer == 6) {
+					return Constants.SPLIT;
+				}
+				return Constants.HIT;
+			}
+			//same to hard hand
+			if(dealer >= 7 && dealer <= 10) {
+				return Constants.HIT;
+			}
+			if(dealer == 1) {
+				return Constants.HIT;
+			}
 		}
 		if(dealer == 6) {
-			return Constants.SPLIT;
+			if(dealer >= 2 && dealer <= 7) {
+				if(dealer == 2 && hot <=-1) {
+					return Constants.HIT;
+				}
+				if(dealer == 3 && hot <= -3) {
+					return Constants.HIT;
+				}
+				if(dealer == 4 && hot <= -4) {
+					return Constants.HIT;
+				}
+				if(dealer == 5 && hot <= -5) {
+					return Constants.HIT;
+				}
+				return Constants.SPLIT;
+			} else {
+				return Constants.HIT;
+			}
 		}
 		if(dealer == 4) {
-			return Constants.SPLIT;
+			if(dealer >= 2 && dealer <= 7) {
+				if(dealer == 2 && hot <=-3) {
+					return Constants.HIT;
+				}
+				if((dealer == 3 || dealer == 4) && hot <= -5) {
+					return Constants.HIT;
+				}
+				return Constants.SPLIT;
+			} else {
+				return Constants.HIT;
+			}
 		}
 		return Constants.SPLIT;
 	}
@@ -396,65 +477,95 @@ public class BestStrategy {
 		}
 
 		if(value == 11) {
-			if(hot <= -5 && dealer == 1) {
+			if(hot <= -2 && dealer == 1) {
 				return Constants.HIT;
-			} else {
-				return Constants.DOUBLE;
-			}
+			} 	
+			return Constants.DOUBLE;
 		}
 		if(value == 10) {
-			if(dealer >= 2 && dealer <= 9) {
+			if(dealer >= 2 && dealer <= 7) {
 				return Constants.DOUBLE;
 			}
-			if(dealer == 10 || dealer == 1) {
-				if(hot <= 0) {
-					return Constants.HIT;
-				} else {
+			if(dealer == 8) {
+				if(hot >= -4) {
 					return Constants.DOUBLE;
+				} else {
+					return Constants.HIT;
+				}
+			}
+			if(dealer == 9) {
+				if(hot >= -1) {
+					return Constants.DOUBLE;
+				} else {
+					return Constants.HIT;
+				}
+			}
+			if(dealer == 10 || dealer == 1) {
+				if(hot >= 3) {
+					return Constants.DOUBLE;
+				} else {
+					return Constants.HIT;
 				}
 			}
 		}
 		
 		if(value == 9) {
-			if(dealer == 1 || dealer == 10 || dealer == 9) {
+			if(dealer == 1 || dealer == 10 || dealer == 9 || dealer == 8) {
 				return Constants.HIT;
 			}
 			
-			if(dealer == 8 && hot >= 3) {
-				return Constants.DOUBLE;
-			}
-			if(dealer == 7 && hot >= -2) {
-				return Constants.DOUBLE;
-			}
-			if(dealer >= 2 && dealer <= 6) {
-				if(hot >= -3) {
+			if(dealer == 7) {
+				if(hot >= 4) {
 					return Constants.DOUBLE;
-				}
-				if(dealer >= 3 && dealer <= 6) {
-					return Constants.DOUBLE;
-				}
-				if(dealer == 2 && hot <= -4) {
+				} else {
 					return Constants.HIT;
 				}
+			}
+			if(dealer == 2) {
+				if(hot >= 2) {
+					return Constants.DOUBLE;
+				} else {
+					return Constants.HIT;
+				}
+			}
+			if(dealer == 3) {
+				if(hot >= -1) {
+					return Constants.DOUBLE;
+				} else {
+					return Constants.HIT;
+				}
+			}
+			if(dealer == 4) {
+				if(hot >= -2) {
+					return Constants.DOUBLE;
+				} else {
+					return Constants.HIT;
+				}
+			}
+			if(dealer == 5) {
+				if(hot >= -4) {
+					return Constants.DOUBLE;
+				} else {
+					return Constants.HIT;
+				}
+			}
+			if(dealer <= 6) {
+				return Constants.DOUBLE;
 			}
 			return Constants.HIT;
 		}
 		//the interesting value is between 8 and 16
 		//double cases
 		if(value == 8) {
-			
-			if(dealer == 6 && hot >= -1) {
+			if(dealer == 6 && hot >= 3) {
 				return Constants.DOUBLE;
 			}
-			if(dealer == 5 && hot >= 1) {
+			if(dealer == 5 && hot >= 4) {
 				return Constants.DOUBLE;
 			}
-			if(dealer == 4 && hot >= 3) {
+			if(dealer == 4 && hot >= 5) {
 				return Constants.DOUBLE;
-			}
-			if(dealer == 3 && hot >= 5) {
-				return Constants.DOUBLE;
-			}
+			}			
 			return Constants.HIT;
 		}
 		

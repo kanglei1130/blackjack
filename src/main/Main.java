@@ -63,9 +63,9 @@ public class Main {
 		
 		int index = 8;
 		int player[][] = {
-				{8, 8},
+				{6, 2},
 		};
-		String stras[] = {Constants.STAND, Constants.SPLIT};
+		String stras[] = {Constants.HIT, Constants.DOUBLE};
 		
 		PokerCard dealerCard = null, playFirstCard = null, playSecondCard = null;
 		for(int upcard = 1; upcard <= 10; ++upcard) {
@@ -133,12 +133,15 @@ public class Main {
 			stra = startStra;
 			for(int j = 0; j < lei.numberOfHands(); ++j) {
 				OneHand curhand = lei.getOneHand(j);
+				/*
 				stra = BestStrategy.BestStrategy(curhand, dealerCard, hot, allowSplit);
-
 				if(lei.numberOfHands() >= 3 && stra.contains(Constants.SPLIT)) {
 					stra = BestStrategy.BestStrategy(curhand, dealerCard, hot, false);
 				}
-				
+				*/
+				if(curhand.numberOfCards() > 2) {
+					stra = BestStrategy.BestStrategy(curhand, dealerCard, hot, allowSplit);					
+				}
 				if(stra.equals(Constants.HIT)) {
 					curhand.hit(deck.drawCard());	
 					j--;
