@@ -20,7 +20,63 @@ public class BestStrategy {
 			}
 			return Constants.STAND;
 		}
-		
+		//pair of 9
+		if(value==18) {
+			if(dealer >=2 && dealer <= 6) {
+				if(hot <= -5 && (dealer == 2 || dealer == 3)) {
+					return Constants.STAND;
+				} else {
+					return Constants.SPLIT;
+				}
+			}
+			
+			if(dealer == 7) {
+				if(hot >= 4) {
+					return Constants.SPLIT;
+				} else {
+					return Constants.STAND;
+				}
+			}
+			if(dealer == 8 || dealer == 9) {
+				return Constants.SPLIT;
+			}
+			
+			if(dealer == 10) {
+				return Constants.STAND;
+			}
+			if(dealer == 1) {
+				if(hot >= 1) {
+					return Constants.SPLIT;
+				} else {
+					return Constants.STAND;
+				}
+			}
+		}
+		if(dealer == 16) {
+			if(dealer == 1 && hot <= -2) {
+				return Constants.HIT;
+			} else {
+				return Constants.SPLIT;
+			}
+		}
+		if(dealer == 14) {
+			return Constants.SPLIT;
+		}
+		if(dealer == 12) {
+			return Constants.SPLIT;
+		}
+		if(dealer == 10) {
+			return bestHardHandStrategy(hand, card, hot);
+		}
+		if(dealer == 8) {
+			return Constants.SPLIT;
+		}
+		if(dealer == 6) {
+			return Constants.SPLIT;
+		}
+		if(dealer == 4) {
+			return Constants.SPLIT;
+		}
 		return Constants.SPLIT;
 	}
 	public static String bestSoftHandStrategy(OneHand hand, PokerCard card, int hot) {
@@ -207,7 +263,6 @@ public class BestStrategy {
 	public static String bestHardHandStrategy(OneHand hand, PokerCard card, int hot) {
 		int value = hand.hardHandValue();		
 		int dealer = card.getTTValue();
-		String res = Constants.HIT;
 		boolean allowDouble = (hand.numberOfCards() == 2);
 
 		if(value >= 17) {

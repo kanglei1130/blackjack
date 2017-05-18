@@ -61,9 +61,9 @@ public class Main {
 		*/
 		//hard
 		
-		int index = 10;
+		int index = 8;
 		int player[][] = {
-				{10, 10},
+				{8, 8},
 		};
 		String stras[] = {Constants.STAND, Constants.SPLIT};
 		
@@ -101,10 +101,7 @@ public class Main {
 		boolean allowSplit = false;
 		if(stra.contains(Constants.SPLIT)) {
 			allowSplit = true;
-		} else if(stra.contains(Constants.HIT)) {
-			allowSplit = false;
-		}
-		
+		} 
 		while(r++ < round) {
 			Deck deck = new Deck(1, hot);
 			deck.shuffle();
