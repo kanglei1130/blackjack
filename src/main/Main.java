@@ -215,7 +215,7 @@ public class Main {
 		Player lei = new Player();
 		Player dealer = new Player();
 		
-		int round = 100*1000;
+		int round = 1000*1000;
 		int r = 0;
 		while(r++ < round) {
 			if(deck.shouldBeShuffled()) {
@@ -270,18 +270,17 @@ public class Main {
 		for(int j = 0; j < lei.numberOfHands(); ++j) {
 			OneHand curhand = lei.getOneHand(j);
 			
+			//9.96%
 			String bestStra = BestStrategy.BestStrategy(curhand, dealerCard, hot, true);
 			if(lei.numberOfHands() >= 3 && bestStra.contains(Constants.SPLIT)) {
 				bestStra = BestStrategy.BestStrategy(curhand, dealerCard, hot, false);
 			}
-			String stra = bestStra;
-			/*
 			
+			//8.47%
 			String stra = Strategy.PlayerStrategy(curhand, dealerCard, true, true);
 			if(lei.numberOfHands() >= 3 && stra.contains(Constants.SPLIT)) {
 				stra = Strategy.PlayerStrategy(curhand, dealerCard, true, false);
 			}
-			*/
 			/*
 			if(!bestStra.endsWith(stra)) {
 				Gson gson = new Gson();
