@@ -212,10 +212,13 @@ public class Main {
 		Deck deck = new Deck(6, 0);
 		deck.shuffle();
 		
+		double maxEarn = Double.MIN_VALUE;
+		double maxLoss = Double.MAX_VALUE;
+		
 		Player lei = new Player();
 		Player dealer = new Player();
 		
-		int round = 1000*1000;
+		int round = 500;
 		int r = 0;
 		while(r++ < round) {
 			if(deck.shouldBeShuffled()) {
@@ -225,8 +228,11 @@ public class Main {
 			simulateOneRound(deck, dealer, lei, 1);
 			dealer.clear();
 			lei.clear();
+			
+			maxEarn = Math.max(lei.cash_, maxEarn);
+			maxLoss = Math.min(lei.cash_, maxLoss);
 		}
-		Log.d(TAG, lei.cash_);
+		Log.d(TAG, lei.cash_, maxEarn, maxLoss);
 	}
 	
 	
