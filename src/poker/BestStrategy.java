@@ -52,14 +52,14 @@ public class BestStrategy {
 				}
 			}
 		}
-		if(dealer == 16) {
+		if(value == 16) {
 			if(dealer == 1 && hot <= -2) {
 				return Constants.HIT;
 			} else {
 				return Constants.SPLIT;
 			}
 		}
-		if(dealer == 14) {
+		if(value == 14) {
 			if(dealer >= 2 && dealer <= 7) {
 				return Constants.SPLIT;
 			}
@@ -70,7 +70,7 @@ public class BestStrategy {
 				return Constants.HIT;
 			}
 		}
-		if(dealer == 12) {
+		if(value == 12) {
 			if(dealer >= 2 && dealer <= 6) {
 				return Constants.SPLIT;
 			}
@@ -88,10 +88,10 @@ public class BestStrategy {
 				return Constants.HIT;
 			}
 		}
-		if(dealer == 10) {
+		if(value == 10) {
 			return bestHardHandStrategy(hand, card, hot);
 		}
-		if(dealer == 8) {
+		if(value == 8) {
 			if(dealer == 2) {
 				return Constants.HIT;
 			}
@@ -126,7 +126,7 @@ public class BestStrategy {
 				return Constants.HIT;
 			}
 		}
-		if(dealer == 6) {
+		if(value == 6) {
 			if(dealer >= 2 && dealer <= 7) {
 				if(dealer == 2 && hot <=-1) {
 					return Constants.HIT;
@@ -145,7 +145,7 @@ public class BestStrategy {
 				return Constants.HIT;
 			}
 		}
-		if(dealer == 4) {
+		if(value == 4) {
 			if(dealer >= 2 && dealer <= 7) {
 				if(dealer == 2 && hot <=-3) {
 					return Constants.HIT;
@@ -165,6 +165,9 @@ public class BestStrategy {
 		int dealer = card.getTTValue();
 		boolean allowDouble = (hand.numberOfCards() == 2);
 		
+		if(value == 21) {
+			return Constants.STAND;
+		}
 		if(value == 20) {
 			if(!allowDouble) {
 				return Constants.STAND;

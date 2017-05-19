@@ -13,7 +13,7 @@ public class Deck {
 	private int shuffle_point_ = 0; 
 	private static final String TAG = "Deck";
 	
-	private int hot_ = -10;
+	private int realCount = 0;
 	// 2,3,4,5,6  => -1
 	// 10,j,q,k,1  => 1
 	
@@ -40,12 +40,13 @@ public class Deck {
 	public Deck(int num, int hot) {
 		init(num);
 		this.shuffle();
-
+		hot *= num;
 		if(hot >= 0) {
 			for (Iterator<PokerCard> iter = deck_.listIterator(); iter.hasNext() && hot != 0; ) {
 				PokerCard a = iter.next();
-				if (a.getValue() >= 2 && a.getValue() <= 6) {
+				if (a.isSmallCard()) {
 					hot--;
+					this.realCount++;
 					iter.remove();
 				} else if(a.getValue() <= 9 && a.getValue() >=7) {
 					iter.remove();
@@ -56,8 +57,9 @@ public class Deck {
 		} else {
 			for (Iterator<PokerCard> iter = deck_.listIterator(); iter.hasNext() && hot != 0; ) {
 				PokerCard a = iter.next();
-				if (a.getValue() == 1 || a.getTTValue() == 10) {
+				if (a.isBigCard()) {
 					hot++;
+					this.realCount --;
 					iter.remove();
 				} else if(a.getValue() <= 9 && a.getValue() >=7) {
 					iter.remove();
@@ -111,7 +113,18 @@ public class Deck {
 	 */
 	 public PokerCard drawCard()
 	 {	
-		 return deck_.remove(0);
+		 PokerCard ret = deck_.remove(0);
+		 if(ret.isBigCard()) {
+			 this.realCount --;
+		 }
+		 if(ret.isSmallCard()) {
+			 this.realCount ++;
+		 }
+		 return ret;
+	 }
+	 
+	 public int getTrueCount() {
+		 return (int) Math.rint(this.realCount * 52.0/(this.deck_.size()));
 	 }
 	
 	

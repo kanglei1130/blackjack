@@ -1,5 +1,7 @@
 package poker;
 
+import com.google.gson.Gson;
+
 import utility.Constants;
 import utility.Log;
 
@@ -27,7 +29,7 @@ public class Strategy {
 			{"H", "S", "S", "S", "S", "S", "H","H", "H","H"}, //13
 			{"H", "S", "S", "S", "S", "S", "H","H", "H","H"}, //14
 			{"H", "S", "S", "S", "S", "S", "H","H", "H","H"}, //15
-			{"H", "S", "S", "S", "S", "S", "H","H", "H","H"}, //16
+			{"H", "S", "S", "S", "S", "S", "H","H", "H","S"}, //16
 			{"S", "S", "S", "S", "S", "S", "S","S", "S","S"}, //17
 			{"S", "S", "S", "S", "S", "S", "S","S", "S","S"}, //18
 	};
@@ -35,12 +37,13 @@ public class Strategy {
 	//column:(Ace+2)-(Ace+9)
 	private static String [][] soft = {
 		   //1    2    3     4    5    6    7    8    9    10
+			{"H", "H", "H", "S", "S", "S", "H","H", "H","H"}, //1 // in case of cannot split again
 			{"H", "H", "H", "H", "D", "D", "H", "H", "H", "H"}, //2
 			{"H", "H", "H", "H", "D", "D", "H", "H", "H", "H"}, //3
 			{"H", "H", "H", "D", "D", "D", "H", "H", "H", "H"}, //4
 			{"H", "H", "H", "D", "D", "D", "H", "H", "H", "H"}, //5
 			{"H", "H", "D", "D", "D", "D", "H", "H", "H", "H"}, //6
-			{"H", "S", "D", "D", "D", "D", "D", "S", "H", "H"}, //7
+			{"H", "S", "D", "D", "D", "D", "S", "S", "H", "H"}, //7
 			{"S", "S", "S", "S", "S", "S", "S", "S", "S", "S"}, //8
 			{"S", "S", "S", "S", "S", "S", "S", "S", "S", "S"}, //9
 			
@@ -56,7 +59,7 @@ public class Strategy {
 			{"H", "D", "D", "D", "D", "D", "D", "D", "D", "H"}, //5
 			{"H", "P", "P", "P", "P", "P", "H", "H", "H", "H"}, //6
 			{"H", "P", "P", "P", "P", "P", "P", "H", "H", "H"}, //7
-			{"S", "P", "P", "P", "P", "P", "P", "P", "S", "S"}, //8
+			{"P", "P", "P", "P", "P", "P", "P", "P", "P", "P"}, //8
 			{"S", "P", "P", "P", "P", "P", "S", "P", "P", "S"}, //9
 			{"S", "S", "S", "S", "S", "S", "S", "S", "S", "S"},	//10
 	};
@@ -104,9 +107,15 @@ public class Strategy {
 	}
 	
 	//player's strategy
-	public String PlayerStrategy(OneHand hand, int dealerFirstCard, boolean allowDouble, boolean allowSplit)
+	public static String PlayerStrategy(OneHand hand, PokerCard dealerCard, boolean allowDouble, boolean allowSplit)
 	{
+		int dealerFirstCard = dealerCard.getTTValue();
 		String stra = Constants.STAND;
+	
+		if(hand.numberOfCards() > 2) {
+			allowDouble = false;
+		}
+		
 		if(hand.isPairs() && allowSplit == true) {
 			stra = pairStrategy(hand, dealerFirstCard);
 		} else if(hand.softHand()) {
@@ -121,7 +130,7 @@ public class Strategy {
 		return stra;
 	}
 	
-	public String pairStrategy(OneHand pair, int dealerFirstCard) {	
+	public static String pairStrategy(OneHand pair, int dealerFirstCard) {	
 		int playerCard = pair.firstCard().getTTValue() - 1;
 		int dealerFirstCardIndex = dealerFirstCard - 1;
 		String strategy = pairs[playerCard][dealerFirstCardIndex];
@@ -139,10 +148,11 @@ public class Strategy {
 		}
 	}
 	
-	public String softHandStrategy(OneHand softhand, int dealerFirstCard) {
+	public static String softHandStrategy(OneHand softhand, int dealerFirstCard) {
 		
 		int playerSumExcpAce = 0;
-		playerSumExcpAce = softhand.softHandValue()-2-11;
+		
+		playerSumExcpAce = softhand.softHandValue()-12;
 		if(playerSumExcpAce > 7) {
 			playerSumExcpAce = 7;
 		}
@@ -150,7 +160,7 @@ public class Strategy {
 		if(dealerFirstCardIndex > 9) {
 			dealerFirstCardIndex = 9;
 		}
-			
+		
 		String strategy = soft[playerSumExcpAce][dealerFirstCardIndex];
 			
 		if (strategy.equals("D")) {
@@ -167,10 +177,11 @@ public class Strategy {
 		}
 	}
 	
-	public String hardHandStrategy(OneHand hand, int dealerFirstCard) {
+	public static String hardHandStrategy(OneHand hand, int dealerFirstCard) {
 		int playerSumCard = 0;
+		int value = hand.softHandValue();
 		if (hand.softHandValue()<18) {
-			playerSumCard = hand.softHandValue()-5;
+			playerSumCard = value >=5 ? value-5 : 0;
 		} else {
 			playerSumCard = 13;
 		}

@@ -5,10 +5,8 @@ import java.util.List;
 
 public class Player {
 	List<OneHand> hands_ = null;
-	
-	Strategy stra_;
-	
-	private double cash_ = 0.0;
+		
+	public double cash_ = 0.0;
 	
 	public OneHand getOneHand(int i) {
 		return hands_.get(i);
@@ -30,5 +28,9 @@ public class Player {
 	
 	public Player() {
 		this.hands_ = new ArrayList<OneHand>();
+	}
+	
+	public void clear() {
+		this.hands_.clear();
 	}
 }

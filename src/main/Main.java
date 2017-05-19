@@ -35,12 +35,15 @@ public class Main {
 		
 		//iterateOneHand();
 
-		
+		/*
 		for(int hot = -5; hot <= 5; hot += 1) {
 			List<String> cur = hotnessTest(hot);
 			ReadWriteTrace.writeFile(cur, output.concat(String.valueOf(hot)));
 		}
+		*/
+
 		
+		simulation();
 	}	
 	
 	
@@ -93,7 +96,7 @@ public class Main {
 	}
 	
 	public static double winnings(PokerCard dealerCard, PokerCard playFirstCard, PokerCard playSecondCard, String stra, int hot) {
-		int round = 100*1000;
+		int round = 1000*1000;
 		int r = 0;
 		double sumbets = 0;
 		Strategy dealerStra = new Strategy();
@@ -203,6 +206,151 @@ public class Main {
 			//Log.d("=========================================================");
 		}
 		return sumbets;
+	}
+	
+	public static void simulation() {
+		Deck deck = new Deck(6, 0);
+		deck.shuffle();
+		
+		Player lei = new Player();
+		Player dealer = new Player();
+		
+		int round = 100*1000;
+		int r = 0;
+		while(r++ < round) {
+			if(deck.shouldBeShuffled()) {
+				deck = new Deck(6, 0);
+				deck.shuffle();
+			}
+			simulateOneRound(deck, dealer, lei, 1);
+			dealer.clear();
+			lei.clear();
+		}
+		Log.d(TAG, lei.cash_);
+	}
+	
+	
+	public static void simulateOneRound(Deck deck, Player dealer, Player lei, int curbet) {
+		
+		OneHand dealerHand = new OneHand();
+		dealer.addOneHand(dealerHand);
+		
+		dealer.getOneHand(0).hit(deck.drawCard());
+		dealer.getOneHand(0).hit(deck.drawCard());
+		
+		PokerCard dealerCard = dealer.getOneHand(0).firstCard();
+	
+		int hot = deck.getTrueCount();
+		
+		OneHand hand = new OneHand(curbet);
+		if(hot >= 2) {
+			hand = new OneHand(curbet * 10);
+		}
+		
+		lei.addOneHand(hand);
+		
+		
+		lei.getOneHand(0).hit(deck.drawCard());
+		lei.getOneHand(0).hit(deck.drawCard());
+		
+		if(hand.isBlackJack()) {
+			if(dealerCard.getValue() == 1) {
+				lei.cash_ += hand.getBet();
+			}
+			if(!dealerHand.isBlackJack()) {
+				lei.cash_ += hand.getBet() * 1.5;					
+			}
+			return;
+		} else if(dealerHand.isBlackJack()) {
+			lei.cash_ -= hand.getBet();
+			return;
+		}
+		
+		
+		for(int j = 0; j < lei.numberOfHands(); ++j) {
+			OneHand curhand = lei.getOneHand(j);
+			
+			String bestStra = BestStrategy.BestStrategy(curhand, dealerCard, hot, true);
+			if(lei.numberOfHands() >= 3 && bestStra.contains(Constants.SPLIT)) {
+				bestStra = BestStrategy.BestStrategy(curhand, dealerCard, hot, false);
+			}
+			String stra = bestStra;
+			/*
+			
+			String stra = Strategy.PlayerStrategy(curhand, dealerCard, true, true);
+			if(lei.numberOfHands() >= 3 && stra.contains(Constants.SPLIT)) {
+				stra = Strategy.PlayerStrategy(curhand, dealerCard, true, false);
+			}
+			*/
+			/*
+			if(!bestStra.endsWith(stra)) {
+				Gson gson = new Gson();
+				Log.d(TAG, stra, bestStra, hot);
+				Log.d(TAG, gson.toJson(dealerCard));
+				Log.d(TAG, gson.toJson(curhand), gson.toJson(curhand.softHandValue()));
+				Log.d(TAG, gson.toJson(lei.numberOfHands()));
+				assert 0 == 1;
+			}
+			*/
+			
+			if(stra.equals(Constants.HIT)) {
+				curhand.hit(deck.drawCard());	
+				j--;
+			} else if(stra.equals(Constants.STAND)) {
+				continue;
+			} else if(stra.equals(Constants.DOUBLE)) {
+				curhand.doubleDown(deck.drawCard());
+				continue;		
+			} else if(stra.equals(Constants.SPLIT)) {
+				OneHand oneMore = curhand.split();
+				curhand.hit(deck.drawCard());
+				oneMore.hit(deck.drawCard());
+				lei.addOneHand(oneMore);
+				j--;
+				continue;
+			} else {
+				
+			}
+		}
+		
+		//dealer moves
+		while(true) {
+			String move = Strategy.DealerStrategy(dealer.getOneHand(0));
+			if(move.equals(Constants.HIT)) {
+				dealer.getOneHand(0).hit(deck.drawCard());
+			} else if(move.equals(Constants.STAND)) {
+				break;
+			} else {
+				
+			}
+		}
+		
+		//sum up
+
+		int dvalue = dealer.getOneHand(0).softHandValue();
+		
+		//Gson gson = new Gson();
+		//Log.d(dvalue, gson.toJson(dealer.getOneHand(0)));
+
+		for(int j = 0; j < lei.numberOfHands(); ++j) {
+			OneHand curHand = lei.getOneHand(j);
+			int myvalue = curHand.softHandValue();
+			//Log.d("player", gson.toJson(curHand));
+			double bet = curHand.getBet();
+			if(myvalue > 21) {
+				//player bust
+				lei.cash_ -= bet;
+			} else if(dvalue > 21) {
+				lei.cash_ += bet;
+			} else if(myvalue > dvalue){
+				lei.cash_ += bet;
+			} else if(myvalue < dvalue) {
+				lei.cash_ -= bet;
+			} else {
+				//Log.error(TAG, myvalue, dvalue);
+			}
+		}
+		
 	}
 
 }

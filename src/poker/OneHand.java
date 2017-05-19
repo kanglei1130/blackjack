@@ -120,15 +120,12 @@ public class OneHand {
 	
 	public boolean softHand()
 	{
-		if(isBlackJack()||isPairs()) {
-			return false;
+		if (this.handValue < 12 && this.numberOfAce > 0) {
+			return true;
 		} else {
-		    if (this.handValue < 12 && this.numberOfAce > 0) {
-		    	return true;
-		    } else {
-		    	return false;
-		    }
-         }
+			return false;    
+		}
+        
 	}
 	
 	public boolean isPairs()
