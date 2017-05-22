@@ -218,17 +218,17 @@ public class Main {
 		Player lei = new Player();
 		Player dealer = new Player();
 		
-		int round = 500;
+		int round = 10*1000*1000;
 		int r = 0;
 		while(r++ < round) {
 			if(deck.shouldBeShuffled()) {
-				deck = new Deck(6, 0);
+				deck = new Deck(2, 0);
 				deck.shuffle();
 			}
 			simulateOneRound(deck, dealer, lei, 1);
 			dealer.clear();
 			lei.clear();
-			
+			//lei.cash_ -= 0.04;
 			maxEarn = Math.max(lei.cash_, maxEarn);
 			maxLoss = Math.min(lei.cash_, maxLoss);
 		}
@@ -264,7 +264,7 @@ public class Main {
 				lei.cash_ += hand.getBet();
 			}
 			if(!dealerHand.isBlackJack()) {
-				lei.cash_ += hand.getBet() * 1.5;					
+				lei.cash_ += hand.getBet() * 1.2;					
 			}
 			return;
 		} else if(dealerHand.isBlackJack()) {
@@ -281,12 +281,15 @@ public class Main {
 			if(lei.numberOfHands() >= 3 && bestStra.contains(Constants.SPLIT)) {
 				bestStra = BestStrategy.BestStrategy(curhand, dealerCard, hot, false);
 			}
+			String stra = bestStra;
 			
-			//8.47%
+			//8.47%,  1 dollar per round 3.7%
+			/*
 			String stra = Strategy.PlayerStrategy(curhand, dealerCard, true, true);
 			if(lei.numberOfHands() >= 3 && stra.contains(Constants.SPLIT)) {
 				stra = Strategy.PlayerStrategy(curhand, dealerCard, true, false);
 			}
+			*/
 			/*
 			if(!bestStra.endsWith(stra)) {
 				Gson gson = new Gson();

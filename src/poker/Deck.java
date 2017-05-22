@@ -28,7 +28,7 @@ public class Deck {
 				deck_.add(new PokerCard(j, PokerCard.SPADE));	
 			}
 		}
-		shuffle_point_ = this.deck_.size()/3;
+		shuffle_point_ = this.deck_.size()/2;
 	}
 	
 	//change to number of decks
