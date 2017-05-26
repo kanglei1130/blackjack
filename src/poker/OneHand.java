@@ -10,7 +10,6 @@ public class OneHand {
 	private List<PokerCard> hand_ = new ArrayList<PokerCard>(); //
 	private double bet_ = 0.0;
 	private static final String TAG = "OneHand";
-	private static int kBustThreshold = 999;
 	
 
 	private int numberOfAce;
@@ -49,9 +48,6 @@ public class OneHand {
 			this.numberOfAce++;
 		}
 		this.handValue += card.getTTValue();
-		if (this.handValue > 21) {
-			this.handValue = kBustThreshold;
-		}
 		this.hand_.add(card);
 	}
 	

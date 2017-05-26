@@ -208,8 +208,9 @@ public class Main {
 		return sumbets;
 	}
 	
+	public static int kNumberOfDecks = 1;
 	public static void simulation() {
-		Deck deck = new Deck(6, 0);
+		Deck deck = new Deck(kNumberOfDecks, 0);
 		deck.shuffle();
 		
 		double maxEarn = Double.MIN_VALUE;
@@ -222,7 +223,7 @@ public class Main {
 		int r = 0;
 		while(r++ < round) {
 			if(deck.shouldBeShuffled()) {
-				deck = new Deck(2, 0);
+				deck = new Deck(kNumberOfDecks, 0);
 				deck.shuffle();
 			}
 			simulateOneRound(deck, dealer, lei, 1);
@@ -234,7 +235,6 @@ public class Main {
 		}
 		Log.d(TAG, lei.cash_, maxEarn, maxLoss);
 	}
-	
 	
 	public static void simulateOneRound(Deck deck, Player dealer, Player lei, int curbet) {
 		
@@ -250,6 +250,10 @@ public class Main {
 		
 		OneHand hand = new OneHand(curbet);
 		if(hot >= 2) {
+			hand = new OneHand(curbet * 5);
+		}
+		
+		if(hot >= 3) {
 			hand = new OneHand(curbet * 10);
 		}
 		
@@ -277,6 +281,7 @@ public class Main {
 			OneHand curhand = lei.getOneHand(j);
 			
 			//9.96%
+			
 			String bestStra = BestStrategy.BestStrategy(curhand, dealerCard, hot, true);
 			if(lei.numberOfHands() >= 3 && bestStra.contains(Constants.SPLIT)) {
 				bestStra = BestStrategy.BestStrategy(curhand, dealerCard, hot, false);
